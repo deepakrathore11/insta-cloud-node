@@ -1,4 +1,4 @@
-// InstaCloud - API Gateway layer (CORS + rate limit + routing) + saare modules
+// InstaCloud API gateway: CORS, rate limiting, and route registration.
 const http = require("http");
 const path = require("path");
 const express = require("express");
@@ -12,9 +12,9 @@ const LIMIT = parseInt(process.env.RATE_LIMIT || "60", 10);
 app.set("trust proxy", true);
 app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: true })); // login form ke liye
+app.use(express.urlencoded({ extended: true })); // Supports URL-encoded login forms.
 
-// Redis rate limiting: ratelimit:{ip}:{minute} -> INCR + EXPIRE 60
+// Redis rate limiting: ratelimit:{ip}:{minute} -> INCR + EXPIRE 60.
 app.use("/api", async (req, res, next) => {
   try {
     const key = `ratelimit:${req.ip}:${Math.floor(Date.now() / 60000)}`;
@@ -32,12 +32,12 @@ app.use("/api/v1", require("./routes/interactions"));
 app.get("/health", (req, res) => res.json({ status: "ok" }));
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use((err, req, res, next) => { // koi bhi error aaye to JSON me
+app.use((err, req, res, next) => { // Return API errors as JSON.
   console.error(err);
   res.status(500).json({ detail: "Server error: " + err.message });
 });
 
-// Real-time notifications: Redis Pub/Sub -> WebSocket
+// Real-time notifications: Redis Pub/Sub -> WebSocket.
 const server = http.createServer(app);
 const wss = new WebSocketServer({ noServer: true });
 server.on("upgrade", (req, socket, head) => {
@@ -55,5 +55,5 @@ server.on("upgrade", (req, socket, head) => {
 
 const PORT = process.env.PORT || 8000;
 initDb()
-  .then(() => server.listen(PORT, () => console.log(`InstaCloud chal gaya: http://localhost:${PORT}`)))
-  .catch((e) => { console.error("Database connect nahi hua. DATABASE_URL check karo:", e.message); process.exit(1); });
+  .then(() => server.listen(PORT, () => console.log(`InstaCloud is running at http://localhost:${PORT}`)))
+  .catch((e) => { console.error("Database connection failed. Check DATABASE_URL:", e.message); process.exit(1); });

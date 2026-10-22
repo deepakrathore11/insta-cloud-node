@@ -1,4 +1,4 @@
-// Polyglot persistence: PostgreSQL (pg) + Redis (ioredis) + Cloudinary
+// Data services: PostgreSQL, Redis, and Cloudinary.
 require("dotenv").config();
 const { Pool } = require("pg");
 const Redis = require("ioredis");
@@ -12,7 +12,7 @@ const pool = new Pool({
 });
 
 const redis = new Redis(process.env.REDIS_URL || "redis://localhost:6379", { maxRetriesPerRequest: 2 });
-redis.on("error", () => {}); // Redis down ho to bhi app chale
+redis.on("error", () => {}); // Allow the app to start even if Redis is temporarily unavailable.
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,

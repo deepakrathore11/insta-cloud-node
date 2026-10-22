@@ -1,4 +1,4 @@
-// Component 4: Post & Timeline Feed (signed Cloudinary upload + Redis ZSET feed)
+// Posts and timeline feed using signed Cloudinary uploads and a Redis sorted set.
 const router = require("express").Router();
 const { pool, redis, cloudinary } = require("../db");
 const { auth } = require("../middleware/auth");
@@ -9,7 +9,7 @@ const ser = (p) => ({
   hashtags: p.hashtags || [], likes_count: p.likes_count, created_at: p.created_at,
 });
 
-// Browser ko signed permission, taaki image seedha Cloudinary par jaye
+// Provide a signed upload so the browser can send images directly to Cloudinary.
 router.get("/posts/upload-signature", auth, (req, res) => {
   const cfg = cloudinary.config();
   const params = { timestamp: Math.round(Date.now() / 1000), folder: "instacloud" };
@@ -20,41 +20,30 @@ router.get("/posts/upload-signature", auth, (req, res) => {
 router.post("/posts", auth, async (req, res) => {
   const { image_url, caption = "" } = req.body || {};
   if (!/^https:\/\/res\.cloudinary\.com\//.test(image_url || ""))
-    return res.status(400).json({ detail: "image_url Cloudinary ka hona chahiye" });
-  // 800x800 fit, auto quality, auto format (WebP/AVIF)
+    return res.status(400).json({ detail: "image_url must be a valid Cloudinary URL." });
+  // Limit image dimensions and let Cloudinary optimize quality and format.
   const url = image_url.replace("/upload/", "/upload/w_800,h_800,c_limit,q_auto,f_auto/");
   const tags = [...new Set([...caption.matchAll(/#(\w+)/g)].map((m) => m[1].toLowerCase()))].sort();
   const { rows } = await pool.query(
     `INSERT INTO posts(user_id,image_url,caption,hashtags) VALUES($1,$2,$3,$4)
      RETURNING *, extract(epoch from created_at) AS ts`, [req.user.user_id, url, caption, tags]);
   const p = rows[0];
-  fanOut(p.post_id, req.user.user_id, Number(p.ts)).catch(() => {}); // background, user ko wait nahi karna
+  fanOut(p.post_id, req.user.user_id, Number(p.ts)).catch(() => {}); // Run feed fan-out in the background so the request can return immediately.
   res.status(201).json(ser({ ...p, username: req.user.username }));
 });
 
-router.get("/feed", auth, async (req, res) => {
-  const uid = req.user.user_id, key = `feed:user:${uid}`;
-  let source = "redis", ids = [];
-  try { ids = (await redis.zrevrange(key, 0, 19)).map(Number); } catch {}
-  if (!ids.length) { // cache miss -> PostgreSQL, phir Redis warm karo
-    source = "postgres";
-    const { rows } = await pool.query(
-      `SELECT post_id, extract(epoch from created_at) AS ts FROM posts
-       WHERE user_id=$1 OR user_id IN (SELECT following_id FROM follows WHERE follower_id=$1)
-       ORDER BY created_at DESC LIMIT 200`, [uid]);
-    if (rows.length) {
-      try { await redis.zadd(key, ...rows.flatMap((r) => [Number(r.ts), String(r.post_id)])); } catch {}
-    }
-    ids = rows.slice(0, 20).map((r) => r.post_id);
-  }
-  if (!ids.length) return res.json({ source, posts: [] });
+router.get("/feed", auth, async (_req, res) => {
+  // Global public feed: show the latest posts from every account, not only followed accounts.
+  // Query PostgreSQL directly so new posts appear on the next feed refresh without stale Redis results.
   const { rows } = await pool.query(
-    "SELECT p.*, u.username FROM posts p JOIN users u USING(user_id) WHERE p.post_id = ANY($1::int[])", [ids]);
-  const byId = new Map(rows.map((p) => [p.post_id, p]));
-  res.json({ source, posts: ids.filter((i) => byId.has(i)).map((i) => ser(byId.get(i))) });
+    `SELECT p.*, u.username FROM posts p
+     JOIN users u USING(user_id)
+     ORDER BY p.created_at DESC LIMIT 50`
+  );
+  res.json({ source: "postgres-global", posts: rows.map(ser) });
 });
 
-router.get("/posts/tag/:tag", async (req, res) => { // GIN index use hota hai
+router.get("/posts/tag/:tag", async (req, res) => { // This query can use the GIN hashtag index.
   const { rows } = await pool.query(
     `SELECT p.*, u.username FROM posts p JOIN users u USING(user_id)
      WHERE p.hashtags @> ARRAY[$1]::text[] ORDER BY p.created_at DESC LIMIT 30`, [req.params.tag.toLowerCase()]);

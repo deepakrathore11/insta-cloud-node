@@ -1,4 +1,4 @@
-// Component 6: Background worker - post_id ko followers ke Redis feed (ZSET) me push karta hai
+// Background worker: add a post ID to each follower’s Redis feed (sorted set).
 const { pool, redis } = require("../db");
 
 async function fanOut(postId, userId, ts) {

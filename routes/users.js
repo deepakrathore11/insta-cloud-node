@@ -1,4 +1,4 @@
-// Component 3: User Profile & Social Graph
+// User profiles and social graph.
 const router = require("express").Router();
 const { pool } = require("../db");
 const { auth } = require("../middleware/auth");
@@ -16,7 +16,7 @@ router.get("/:username", async (req, res) => {
 
 router.post("/:id/follow", auth, async (req, res) => {
   const target = parseInt(req.params.id, 10), me = req.user.user_id;
-  if (target === me) return res.status(400).json({ detail: "Khud ko follow nahi kar sakte" });
+  if (target === me) return res.status(400).json({ detail: "You cannot follow your own account." });
   const del = await pool.query("DELETE FROM follows WHERE follower_id=$1 AND following_id=$2", [me, target]);
   if (del.rowCount) return res.json({ following: false });
   try {

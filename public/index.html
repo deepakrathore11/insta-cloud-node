@@ -1,61 +1,286 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>InstaCloud</title>
-<style>
-body{font-family:system-ui,sans-serif;max-width:480px;margin:auto;padding:12px;background:#fafafa;color:#222}
-input,button{padding:8px;margin:3px 0;font-size:15px}input{width:100%;box-sizing:border-box}
-button{cursor:pointer;border:0;border-radius:6px;background:#0095f6;color:#fff;padding:8px 14px}
-.card{background:#fff;border:1px solid #ddd;border-radius:8px;margin:12px 0;padding:10px}
-.card img{width:100%;border-radius:6px}#n{color:#c2185b;min-height:1.2em}
-</style></head><body>
-<h2>📸 InstaCloud</h2><div id="n"></div>
-<div id="auth">
- <input id="u" placeholder="username"><input id="e" placeholder="email (register ke liye)">
- <input id="p" type="password" placeholder="password">
- <button onclick="auth(false)">Login</button> <button onclick="auth(true)">Register</button>
-</div>
-<div id="app" style="display:none">
- <input id="f" type="file" accept="image/*"><input id="c" placeholder="Caption #hashtag">
- <button onclick="post()">Post</button> <button onclick="logout()" style="background:#888">Logout</button>
- <div id="feed"></div>
-</div>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="description" content="InstaCloud — share moments and connect with your community.">
+  <title>InstaCloud · Share your moments</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Pacifico&display=swap" rel="stylesheet">
+  <style>
+    :root{color-scheme:light;--ink:#262626;--muted:#8e8e8e;--line:#efefef;--paper:#fff;--canvas:#fafafa;--blue:#0095f6;--pink:#ff3040;--shadow:0 12px 40px #1c24300d}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--canvas);color:var(--ink);font-family:'DM Sans',system-ui,sans-serif;font-size:14px}button,input,textarea{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid #7dbdff;outline-offset:3px}button:disabled{opacity:.55;cursor:wait}.hidden{display:none!important}.muted{color:var(--muted)}
+    .topbar{height:68px;background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}.topbar-inner{height:100%;max-width:1100px;padding:0 24px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:24px}.brand{font-family:Pacifico,cursive;font-size:27px;letter-spacing:-.8px;color:#171717;text-decoration:none;white-space:nowrap}.searchbox{width:min(270px,30vw);height:38px;border:0;border-radius:10px;background:#f3f4f5;padding:0 14px;color:var(--ink)}.top-actions{display:flex;align-items:center;gap:20px}.icon-btn{width:34px;height:38px;border:0;background:transparent;color:#262626;display:grid;place-items:center;padding:0;position:relative}.icon-btn svg,.nav-link svg,.post-action svg{width:25px;height:25px;stroke:currentColor;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}.avatar{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5);color:#fff;font-weight:700;flex-shrink:0}.avatar.small{width:32px;height:32px;font-size:12px}.avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+    .layout{max-width:1000px;margin:30px auto 70px;padding:0 22px;display:grid;grid-template-columns:minmax(0,630px) 290px;gap:48px;align-items:start}.main-column{min-width:0}.stories{display:flex;gap:18px;overflow-x:auto;background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px 18px 15px;margin-bottom:22px;scrollbar-width:thin}.story{border:0;background:none;min-width:62px;padding:0;display:flex;align-items:center;flex-direction:column;gap:8px;color:#555;font-size:11px}.story-ring{width:58px;height:58px;padding:3px;border-radius:50%;background:linear-gradient(45deg,#feda75,#fa7e1e,#d62976,#962fbf)}.story-ring span{display:grid;place-items:center;width:100%;height:100%;border:2px solid white;border-radius:50%;background:#f7e9f1;color:#7d3d69;font-weight:700;font-size:17px}.story:first-child .story-ring{background:#e7e7e7}.story:first-child .story-ring span{background:#fff;color:#666;font-size:25px}
+    .feed-heading{display:flex;align-items:center;justify-content:space-between;margin:0 2px 14px}.feed-heading h1{font-size:16px;margin:0;font-weight:700}.text-btn{border:0;background:none;color:var(--blue);font-weight:700;padding:7px 0}.post-card{background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:22px;overflow:hidden}.post-header{display:flex;align-items:center;gap:10px;padding:13px 15px}.user-meta{min-width:0;flex:1}.username{font-weight:700;color:#262626}.post-time{font-size:11px;color:var(--muted);margin-top:2px}.more-btn{border:0;background:none;font-size:22px;line-height:1;padding:4px 6px;color:#444}.post-image-wrap{background:#f5f5f5;position:relative;min-height:220px;display:grid;place-items:center}.post-image{display:block;width:100%;max-height:720px;object-fit:contain;aspect-ratio:4/4.3;background:#f7f7f7}.post-body{padding:10px 15px 15px}.post-actions{display:flex;align-items:center;gap:15px;margin-bottom:10px}.post-action{display:flex;align-items:center;gap:6px;border:0;background:none;padding:0;color:var(--ink);font-weight:600}.post-action svg{width:25px;height:25px}.post-action.like-btn.liked{color:var(--pink)}.post-action.like-btn.liked svg{fill:var(--pink);stroke:var(--pink)}.post-action.bookmark{margin-left:auto}.likes-line{font-weight:700;margin:0 0 7px}.caption{margin:0;line-height:1.55;overflow-wrap:anywhere}.caption .username{margin-right:5px}.hashtags{color:#326a9d}.comments-toggle{border:0;background:none;color:var(--muted);padding:9px 0 3px}.comment-list{display:grid;gap:8px;margin:8px 0}.comment{line-height:1.45;overflow-wrap:anywhere}.comment strong{margin-right:6px}.comment-form{display:flex;gap:10px;border-top:1px solid #f5f5f5;padding-top:12px;margin-top:10px}.comment-input{flex:1;min-width:0;border:0;outline:none;background:transparent}.comment-form button{border:0;background:none;color:var(--blue);font-weight:700}.empty-state{background:#fff;border:1px dashed #dedede;border-radius:14px;text-align:center;padding:42px 24px;color:var(--muted)}.empty-icon{width:62px;height:62px;border:1px solid #ddd;border-radius:50%;display:grid;place-items:center;margin:0 auto 14px;color:#555}.empty-state h2{color:var(--ink);font-size:18px;margin:0 0 8px}.empty-state p{margin:0 0 18px;line-height:1.6}
+    .right-column{position:sticky;top:96px}.account-row{display:flex;align-items:center;gap:12px;margin:3px 0 26px}.account-row .user-meta{flex:1}.side-section-head{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-weight:700;margin-bottom:15px}.side-section-head button{color:var(--ink);font-size:12px}.suggestion{display:flex;align-items:center;gap:10px;margin:14px 0}.suggestion .user-meta{flex:1}.suggestion .text-btn{font-size:12px}.side-footer{color:#c7c7c7;font-size:11px;line-height:1.8;margin-top:28px}.side-footer a{color:inherit;text-decoration:none}.side-footer p{margin-top:14px}
+    .auth-shell{min-height:calc(100vh - 68px);display:grid;place-items:center;padding:32px 16px}.auth-card{width:min(390px,100%);background:#fff;border:1px solid var(--line);border-radius:16px;padding:32px;box-shadow:var(--shadow)}.auth-card .brand{display:block;text-align:center;font-size:35px;margin:0 0 10px}.auth-subtitle{text-align:center;color:var(--muted);line-height:1.6;margin:0 0 24px}.field{display:block;width:100%;border:1px solid #dedede;background:#fafafa;border-radius:8px;padding:12px 13px;margin:10px 0;color:var(--ink)}.primary-btn{border:0;border-radius:8px;background:var(--blue);color:#fff;font-weight:700;padding:11px 16px;transition:background .18s,transform .18s}.primary-btn:hover{background:#087ed0}.primary-btn:active{transform:scale(.99)}.auth-card .primary-btn{width:100%;margin-top:8px}.auth-switch{border-top:1px solid var(--line);margin-top:22px;padding-top:20px;text-align:center}.auth-switch button{border:0;background:none;color:var(--blue);font-weight:700}.notice{position:fixed;z-index:30;left:50%;bottom:24px;transform:translate(-50%,20px);opacity:0;pointer-events:none;max-width:min(90vw,440px);padding:12px 17px;border-radius:10px;background:#222;color:#fff;box-shadow:var(--shadow);transition:.2s}.notice.show{transform:translate(-50%,0);opacity:1}.notice.error{background:#b42335}
+    .modal-backdrop{position:fixed;inset:0;z-index:20;background:#0008;display:grid;place-items:center;padding:18px}.modal{background:#fff;border-radius:14px;width:min(500px,100%);overflow:hidden;box-shadow:0 20px 80px #0003}.modal-head{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);padding:14px 18px;font-weight:700}.modal-close{border:0;background:none;font-size:24px}.modal-content{padding:20px}.upload-drop{border:1px dashed #d4d4d4;border-radius:12px;padding:25px 16px;text-align:center;background:#fafafa}.upload-drop svg{width:36px;height:36px;stroke:#777;fill:none;margin-bottom:10px}.upload-drop p{color:var(--muted);margin:8px 0 16px}.file-input{width:100%;max-width:280px;font-size:12px}.preview{width:100%;max-height:320px;object-fit:contain;border-radius:8px;margin-top:14px}.caption-input{width:100%;min-height:85px;resize:vertical;border:1px solid var(--line);border-radius:9px;padding:12px;margin-top:15px}.modal-footer{padding:0 20px 20px;display:flex;justify-content:flex-end;gap:10px}.secondary-btn{border:1px solid #ddd;background:#fff;border-radius:8px;padding:10px 14px;font-weight:600}
+    .mobile-nav{display:none}
+    @media(max-width:850px){.layout{grid-template-columns:minmax(0,630px);max-width:680px;justify-content:center}.right-column{display:none}.searchbox{width:min(220px,30vw)}}
+    @media(max-width:560px){.topbar{height:58px}.topbar-inner{padding:0 15px;gap:10px}.brand{font-size:24px}.searchbox{display:none}.top-actions{gap:13px}.layout{margin:14px auto 82px;padding:0;display:block}.stories{border-left:0;border-right:0;border-radius:0;padding:14px 14px 12px;gap:15px;margin-bottom:12px}.post-card{border-left:0;border-right:0;border-radius:0;margin-bottom:12px}.feed-heading{padding:0 15px}.post-image{aspect-ratio:1/1;max-height:620px}.post-header{padding:12px 14px}.post-body{padding:10px 14px 14px}.mobile-nav{display:flex;position:fixed;z-index:12;bottom:0;left:0;right:0;height:58px;background:#fff;border-top:1px solid var(--line);justify-content:space-around;align-items:center;padding-bottom:env(safe-area-inset-bottom)}.mobile-nav .icon-btn{width:44px}.auth-shell{min-height:calc(100vh - 58px);padding:16px}.auth-card{border:0;box-shadow:none;padding:25px 18px}.post-image-wrap{min-height:180px}}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="#home" aria-label="InstaCloud home">InstaCloud</a>
+      <input id="search" class="searchbox" type="search" placeholder="Search people or hashtags" aria-label="Search people or hashtags">
+      <div class="top-actions" id="topActions">
+        <button class="icon-btn" id="homeBtn" title="Home" aria-label="Home"><svg viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg></button>
+        <button class="icon-btn" id="createBtn" title="Create a post" aria-label="Create a post"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><path d="M12 8v8M8 12h8"/></svg></button>
+        <button class="icon-btn" id="notificationBtn" title="Notifications" aria-label="Notifications"><svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg></button>
+        <button class="icon-btn" id="profileBtn" title="Your account" aria-label="Your account"><span class="avatar small" id="topAvatar">Y</span></button>
+      </div>
+    </div>
+  </header>
+
+  <main id="authView" class="auth-shell">
+    <section class="auth-card" aria-labelledby="authTitle">
+      <a class="brand" href="#home">InstaCloud</a>
+      <h1 id="authTitle" style="text-align:center;font-size:19px;margin:14px 0 8px">Share your world</h1>
+      <p class="auth-subtitle" id="authSubtitle">Sign in to see photos and moments from your community.</p>
+      <form id="authForm">
+        <input class="field" id="username" name="username" placeholder="Username" autocomplete="username" maxlength="50" required>
+        <input class="field hidden" id="email" name="email" type="email" placeholder="Email address" autocomplete="email" maxlength="120">
+        <input class="field" id="password" name="password" type="password" placeholder="Password" autocomplete="current-password" minlength="6" required>
+        <button class="primary-btn" id="authSubmit" type="submit">Log in</button>
+      </form>
+      <div class="auth-switch"><span id="switchCopy">Don't have an account?</span> <button id="switchAuth" type="button">Sign up</button></div>
+    </section>
+  </main>
+
+  <main id="appView" class="layout hidden">
+    <section class="main-column" aria-label="Your feed">
+      <div class="stories" id="stories" aria-label="Stories">
+        <button class="story" id="yourStory"><span class="story-ring"><span>+</span></span><span>Your story</span></button>
+        <button class="story"><span class="story-ring"><span>J</span></span><span>jordan</span></button>
+        <button class="story"><span class="story-ring"><span>M</span></span><span>maya.jpg</span></button>
+        <button class="story"><span class="story-ring"><span>A</span></span><span>alexm</span></button>
+        <button class="story"><span class="story-ring"><span>S</span></span><span>sophia</span></button>
+        <button class="story"><span class="story-ring"><span>L</span></span><span>leo.travel</span></button>
+      </div>
+      <div class="feed-heading"><h1 id="feedTitle">Your feed</h1><button class="text-btn" id="refreshBtn" type="button">Refresh</button></div>
+      <div id="feed" aria-live="polite"></div>
+    </section>
+    <aside class="right-column" aria-label="Your account and suggestions">
+      <div class="account-row"><span class="avatar" id="sideAvatar">Y</span><div class="user-meta"><div class="username" id="sideUsername">Your account</div><div class="post-time">Welcome to InstaCloud</div></div><button class="text-btn" id="logoutBtn" type="button">Log out</button></div>
+      <div class="side-section-head"><span>Suggested for you</span><button class="text-btn" id="hideSuggestions" type="button">See all</button></div>
+      <div id="suggestions">
+        <div class="suggestion"><span class="avatar">J</span><div class="user-meta"><div class="username">jordan.lee</div><div class="post-time">Suggested for you</div></div><button class="text-btn follow-demo" type="button">Follow</button></div>
+        <div class="suggestion"><span class="avatar">M</span><div class="user-meta"><div class="username">maya.jpg</div><div class="post-time">Popular creator</div></div><button class="text-btn follow-demo" type="button">Follow</button></div>
+        <div class="suggestion"><span class="avatar">A</span><div class="user-meta"><div class="username">alex.morgan</div><div class="post-time">New to InstaCloud</div></div><button class="text-btn follow-demo" type="button">Follow</button></div>
+      </div>
+      <div class="side-footer"><a href="#about">About</a> · <a href="#help">Help</a> · <a href="#privacy">Privacy</a> · <a href="#terms">Terms</a><p>© 2026 INSTACLOUD</p><p>Stories and suggested profiles are visual placeholders in this demo.</p></div>
+    </aside>
+  </main>
+
+  <nav class="mobile-nav hidden" id="mobileNav" aria-label="Main navigation">
+    <button class="icon-btn" id="mobileHome" aria-label="Home"><svg viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg></button>
+    <button class="icon-btn" id="mobileSearch" aria-label="Search"><svg viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg></button>
+    <button class="icon-btn" id="mobileCreate" aria-label="Create a post"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><path d="M12 8v8M8 12h8"/></svg></button>
+    <button class="icon-btn" id="mobileNotifications" aria-label="Notifications"><svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg></button>
+    <button class="icon-btn" id="mobileProfile" aria-label="Your account"><span class="avatar small" id="mobileAvatar">Y</span></button>
+  </nav>
+
+  <div id="createModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="createTitle">
+    <section class="modal">
+      <div class="modal-head"><button class="modal-close" id="closeModal" aria-label="Close">×</button><span id="createTitle">Create a new post</span><button class="text-btn" id="sharePostBtn" type="button">Share</button></div>
+      <div class="modal-content">
+        <div class="upload-drop"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg><div><strong>Share a photo with your community</strong></div><p>Choose an image from your device to get started.</p><input class="file-input" id="photoFile" type="file" accept="image/*"></div>
+        <img class="preview hidden" id="photoPreview" alt="Selected photo preview">
+        <textarea class="caption-input" id="captionInput" maxlength="2200" placeholder="Write a caption... Add #hashtags to help people discover your post."></textarea>
+      </div>
+      <div class="modal-footer"><button class="secondary-btn" id="cancelPost" type="button">Cancel</button><button class="primary-btn" id="modalShare" type="button">Share post</button></div>
+    </section>
+  </div>
+  <div id="notice" class="notice" role="status" aria-live="polite"></div>
+
 <script>
-const API="/api/v1";let token=localStorage.getItem("t");const $=id=>document.getElementById(id);
-async function api(path,opt={}){
- opt.headers={...(opt.headers||{}),...(token?{Authorization:"Bearer "+token}:{})};
- const res=await fetch(API+path,opt);const d=await res.json().catch(()=>({}));
- if(!res.ok)throw new Error(d.detail||res.status);return d}
-async function auth(reg){
- const u=$("u").value,p=$("p").value;
- try{
-  if(reg)await api("/auth/register",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({username:u,email:$("e").value,password:p})});
-  const d=await api("/auth/login",{method:"POST",body:new URLSearchParams({username:u,password:p})});
-  token=d.access_token;localStorage.setItem("t",token);init();
- }catch(e){alert(e.message)}}
-function logout(){localStorage.removeItem("t");location.reload()}
-async function post(){
- const f=$("f").files[0];if(!f)return alert("Pehle photo chuno");
- try{
-  const s=await api("/posts/upload-signature");const fd=new FormData();
-  fd.append("file",f);["api_key","timestamp","signature","folder"].forEach(k=>fd.append(k,s[k]));
-  const up=await(await fetch(`https://api.cloudinary.com/v1_1/${s.cloud_name}/image/upload`,{method:"POST",body:fd})).json();
-  if(!up.secure_url)throw new Error("Cloudinary upload fail");
-  await api("/posts",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({image_url:up.secure_url,caption:$("c").value})});
-  $("c").value="";$("f").value="";feed();
- }catch(e){alert(e.message)}}
-async function feed(){
- try{const d=await api("/feed");$("feed").innerHTML="";
-  d.posts.forEach(p=>{const div=document.createElement("div");div.className="card";
-   div.innerHTML='<b></b><img><p></p><button></button>';
-   div.querySelector("b").textContent="@"+p.username;div.querySelector("img").src=p.image_url;
-   div.querySelector("p").textContent=p.caption;
-   const b=div.querySelector("button");b.textContent="❤ "+p.likes_count;
-   b.onclick=async()=>{await api(`/posts/${p.post_id}/like`,{method:"POST"});feed()};
-   $("feed").appendChild(div)})
- }catch(e){if(e.message.includes("token")){logout()}}}
-function init(){
- if(!token)return;$("auth").style.display="none";$("app").style.display="block";feed();
- const ws=new WebSocket((location.protocol=="https:"?"wss://":"ws://")+location.host+API+"/ws/notifications?token="+token);
- ws.onmessage=e=>{$("n").textContent="🔔 "+JSON.parse(e.data).text}}
-init();
-</script></body></html>
+(() => {
+  'use strict';
+  const API = '/api/v1';
+  let token = localStorage.getItem('instacloud_token') || localStorage.getItem('t');
+  let currentUsername = localStorage.getItem('instacloud_username') || '';
+  let registerMode = false;
+  let noticeTimer;
+  const $ = id => document.getElementById(id);
+  const escapeText = value => String(value ?? '');
+  const icon = name => {
+    const paths = {
+      heart: '<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/>',
+      comment: '<path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8Z"/>',
+      send: '<path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/>',
+      bookmark: '<path d="M6 4.5A1.5 1.5 0 0 1 7.5 3h9A1.5 1.5 0 0 1 18 4.5V21l-6-4-6 4Z"/>'
+    };
+    return `<svg viewBox="0 0 24 24" aria-hidden="true">${paths[name]}</svg>`;
+  };
+  async function api(path, options = {}) {
+    const headers = { ...(options.headers || {}) };
+    if (token) headers.Authorization = `Bearer ${token}`;
+    const response = await fetch(API + path, { ...options, headers });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(data.detail || data.error || `Request failed (${response.status})`);
+    return data;
+  }
+  function notify(message, error = false) {
+    const node = $('notice'); node.textContent = message; node.classList.toggle('error', error); node.classList.add('show');
+    clearTimeout(noticeTimer); noticeTimer = setTimeout(() => node.classList.remove('show'), 3200);
+  }
+  function setAvatar(text) {
+    const letter = (text || 'Y').trim().charAt(0).toUpperCase() || 'Y';
+    ['topAvatar', 'sideAvatar', 'mobileAvatar'].forEach(id => { if ($(id)) $(id).textContent = letter; });
+  }
+  function showApp() {
+    $('authView').classList.add('hidden'); $('appView').classList.remove('hidden'); $('mobileNav').classList.remove('hidden');
+    $('sideUsername').textContent = currentUsername ? `@${currentUsername}` : 'Your account'; setAvatar(currentUsername);
+    loadFeed();
+  }
+  function showAuth() {
+    $('authView').classList.remove('hidden'); $('appView').classList.add('hidden'); $('mobileNav').classList.add('hidden');
+  }
+  function logout() {
+    token = null; currentUsername = ''; localStorage.removeItem('instacloud_token'); localStorage.removeItem('instacloud_username'); localStorage.removeItem('t');
+    showAuth(); notify('You have been logged out.');
+  }
+  function updateAuthMode() {
+    $('email').classList.toggle('hidden', !registerMode); $('email').required = registerMode;
+    $('authTitle').textContent = registerMode ? 'Create an account' : 'Share your world';
+    $('authSubtitle').textContent = registerMode ? 'Join the community and start sharing your moments.' : 'Sign in to see photos and moments from your community.';
+    $('authSubmit').textContent = registerMode ? 'Create account' : 'Log in';
+    $('switchCopy').textContent = registerMode ? 'Already have an account?' : "Don't have an account?";
+    $('switchAuth').textContent = registerMode ? 'Log in' : 'Sign up';
+  }
+  $('switchAuth').addEventListener('click', () => { registerMode = !registerMode; updateAuthMode(); });
+  $('authForm').addEventListener('submit', async event => {
+    event.preventDefault();
+    const username = $('username').value.trim(), password = $('password').value;
+    const submit = $('authSubmit'); submit.disabled = true;
+    try {
+      if (registerMode) {
+        await api('/auth/register', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username, email: $('email').value.trim(), password }) });
+      }
+      const data = await api('/auth/login', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams({ username, password }) });
+      token = data.access_token; currentUsername = username;
+      localStorage.setItem('instacloud_token', token); localStorage.setItem('instacloud_username', username);
+      localStorage.setItem('t', token); showApp(); notify(`Welcome${registerMode ? ' to InstaCloud' : ' back'}, @${username}!`); registerMode = false; updateAuthMode();
+    } catch (error) { notify(error.message, true); }
+    finally { submit.disabled = false; }
+  });
+
+  function makeAvatar(username) {
+    const el = document.createElement('span'); el.className = 'avatar small'; el.textContent = (username || '?').charAt(0).toUpperCase(); el.setAttribute('aria-hidden', 'true'); return el;
+  }
+  function makePost(post) {
+    const article = document.createElement('article'); article.className = 'post-card';
+    const header = document.createElement('div'); header.className = 'post-header'; header.append(makeAvatar(post.username));
+    const meta = document.createElement('div'); meta.className = 'user-meta';
+    const username = document.createElement('div'); username.className = 'username'; username.textContent = post.username ? `@${post.username}` : '@member';
+    const time = document.createElement('div'); time.className = 'post-time'; time.textContent = post.created_at ? new Date(post.created_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) : 'InstaCloud';
+    meta.append(username, time); header.append(meta);
+    const more = document.createElement('button'); more.className = 'more-btn'; more.type = 'button'; more.textContent = '···'; more.setAttribute('aria-label', 'More post options'); more.addEventListener('click', () => notify('More post options will be available soon.')); header.append(more);
+    const imageWrap = document.createElement('div'); imageWrap.className = 'post-image-wrap';
+    const img = document.createElement('img'); img.className = 'post-image'; img.src = post.image_url; img.alt = post.caption ? `Photo posted by ${post.username}: ${post.caption}` : `Photo posted by ${post.username || 'a member'}`; img.loading = 'lazy'; img.decoding = 'async';
+    img.addEventListener('error', () => { imageWrap.textContent = 'This image could not be loaded.'; imageWrap.style.padding = '40px'; imageWrap.style.color = '#777'; }); imageWrap.append(img);
+    const body = document.createElement('div'); body.className = 'post-body';
+    const actions = document.createElement('div'); actions.className = 'post-actions';
+    const like = document.createElement('button'); like.className = 'post-action like-btn'; like.type = 'button'; like.innerHTML = `${icon('heart')}<span>Like</span>`; like.setAttribute('aria-label', 'Like post');
+    const commentsButton = document.createElement('button'); commentsButton.className = 'post-action'; commentsButton.type = 'button'; commentsButton.innerHTML = `${icon('comment')}<span>Comment</span>`;
+    const send = document.createElement('button'); send.className = 'post-action'; send.type = 'button'; send.innerHTML = icon('send'); send.setAttribute('aria-label', 'Share post'); send.addEventListener('click', async () => { try { await navigator.clipboard.writeText(location.origin + '/#post-' + post.post_id); notify('Post link copied.'); } catch { notify('Copying links is not supported in this browser.', true); } });
+    const bookmark = document.createElement('button'); bookmark.className = 'post-action bookmark'; bookmark.type = 'button'; bookmark.innerHTML = icon('bookmark'); bookmark.setAttribute('aria-label', 'Save post'); bookmark.addEventListener('click', () => notify('Post saving will be available soon.'));
+    actions.append(like, commentsButton, send, bookmark);
+    const likes = document.createElement('p'); likes.className = 'likes-line'; likes.textContent = `${Number(post.likes_count || 0).toLocaleString()} likes`;
+    const caption = document.createElement('p'); caption.className = 'caption';
+    const captionUser = document.createElement('span'); captionUser.className = 'username'; captionUser.textContent = post.username ? `@${post.username}` : '@member'; caption.append(captionUser, document.createTextNode(post.caption ? ` ${post.caption}` : ''));
+    const commentsToggle = document.createElement('button'); commentsToggle.className = 'comments-toggle'; commentsToggle.type = 'button'; commentsToggle.textContent = 'View comments';
+    const comments = document.createElement('div'); comments.className = 'comment-list hidden';
+    const form = document.createElement('form'); form.className = 'comment-form hidden';
+    const input = document.createElement('input'); input.className = 'comment-input'; input.maxLength = 500; input.placeholder = 'Add a comment…'; input.setAttribute('aria-label', 'Add a comment');
+    const submitComment = document.createElement('button'); submitComment.type = 'submit'; submitComment.textContent = 'Post'; form.append(input, submitComment);
+    let commentsLoaded = false;
+    async function loadComments() {
+      if (commentsLoaded) { comments.classList.toggle('hidden'); form.classList.toggle('hidden'); return; }
+      try {
+        const list = await api(`/posts/${post.post_id}/comments`); comments.replaceChildren();
+        if (!list.length) { const empty = document.createElement('span'); empty.className = 'muted'; empty.textContent = 'No comments yet. Start the conversation.'; comments.append(empty); }
+        list.forEach(item => { const row = document.createElement('div'); row.className = 'comment'; const strong = document.createElement('strong'); strong.textContent = `@${item.username}`; row.append(strong, document.createTextNode(item.text)); comments.append(row); });
+        commentsLoaded = true; comments.classList.remove('hidden'); form.classList.remove('hidden'); commentsToggle.textContent = 'Hide comments';
+      } catch (error) { notify(error.message, true); }
+    }
+    commentsToggle.addEventListener('click', loadComments); commentsButton.addEventListener('click', loadComments);
+    form.addEventListener('submit', async event => {
+      event.preventDefault(); const text = input.value.trim(); if (!text) return;
+      submitComment.disabled = true;
+      try { await api(`/posts/${post.post_id}/comments`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text }) }); input.value = ''; commentsLoaded = false; await loadComments(); notify('Comment added.'); }
+      catch (error) { notify(error.message, true); }
+      finally { submitComment.disabled = false; }
+    });
+    like.addEventListener('click', async () => {
+      like.disabled = true;
+      try { const result = await api(`/posts/${post.post_id}/like`, { method: 'POST' }); likes.textContent = `${Number(result.likes_count || 0).toLocaleString()} likes`; like.classList.toggle('liked', result.liked); like.querySelector('span').textContent = result.liked ? 'Liked' : 'Like'; }
+      catch (error) { notify(error.message, true); }
+      finally { like.disabled = false; }
+    });
+    body.append(actions, likes, caption, commentsToggle, comments, form); article.append(header, imageWrap, body); article.id = `post-${post.post_id}`; return article;
+  }
+  async function loadFeed() {
+    const feed = $('feed'); feed.setAttribute('aria-busy', 'true');
+    try {
+      const data = await api('/feed'); feed.replaceChildren();
+      if (!data.posts || !data.posts.length) {
+        const empty = document.createElement('section'); empty.className = 'empty-state';
+        const glyph = document.createElement('div'); glyph.className = 'empty-icon'; glyph.innerHTML = icon('heart');
+        const title = document.createElement('h2'); title.textContent = 'Your feed is waiting';
+        const description = document.createElement('p'); description.textContent = 'Share your first photo or check back when the community starts posting.';
+        const button = document.createElement('button'); button.className = 'primary-btn'; button.type = 'button'; button.textContent = 'Create your first post'; button.addEventListener('click', openCreate);
+        empty.append(glyph, title, description, button); feed.append(empty);
+      } else data.posts.forEach(post => feed.append(makePost(post)));
+    } catch (error) {
+      if (/token|expired|unauthorized/i.test(error.message)) logout();
+      else { feed.replaceChildren(); const empty = document.createElement('div'); empty.className = 'empty-state'; const title = document.createElement('h2'); title.textContent = 'We could not load your feed'; const desc = document.createElement('p'); desc.textContent = error.message; const retry = document.createElement('button'); retry.className = 'primary-btn'; retry.textContent = 'Try again'; retry.addEventListener('click', loadFeed); empty.append(title, desc, retry); feed.append(empty); }
+    } finally { feed.setAttribute('aria-busy', 'false'); }
+  }
+  function openCreate() { $('createModal').classList.remove('hidden'); $('photoFile').focus(); }
+  function closeCreate() { $('createModal').classList.add('hidden'); $('photoFile').value = ''; $('captionInput').value = ''; $('photoPreview').classList.add('hidden'); $('photoPreview').removeAttribute('src'); }
+  $('createBtn').addEventListener('click', openCreate); $('mobileCreate').addEventListener('click', openCreate); $('yourStory').addEventListener('click', openCreate);
+  $('closeModal').addEventListener('click', closeCreate); $('cancelPost').addEventListener('click', closeCreate);
+  $('createModal').addEventListener('click', event => { if (event.target === $('createModal')) closeCreate(); });
+  $('photoFile').addEventListener('change', () => { const file = $('photoFile').files[0]; if (!file) return; if (!file.type.startsWith('image/')) { notify('Please choose an image file.', true); $('photoFile').value = ''; return; } const preview = $('photoPreview'); preview.src = URL.createObjectURL(file); preview.classList.remove('hidden'); });
+  async function publishPost() {
+    const file = $('photoFile').files[0]; if (!file) return notify('Choose a photo before sharing.', true);
+    if (file.size > 10 * 1024 * 1024) return notify('Please choose an image smaller than 10 MB.', true);
+    $('modalShare').disabled = true; $('sharePostBtn').disabled = true;
+    try {
+      const signature = await api('/posts/upload-signature'); const form = new FormData();
+      form.append('file', file); ['api_key', 'timestamp', 'signature', 'folder'].forEach(key => form.append(key, signature[key]));
+      const response = await fetch(`https://api.cloudinary.com/v1_1/${signature.cloud_name}/image/upload`, { method: 'POST', body: form });
+      const uploaded = await response.json().catch(() => ({}));
+      if (!response.ok || !uploaded.secure_url) throw new Error(uploaded.error?.message || 'The image upload failed. Please try again.');
+      await api('/posts', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ image_url: uploaded.secure_url, caption: $('captionInput').value.trim() }) });
+      closeCreate(); await loadFeed(); notify('Your post has been shared!');
+    } catch (error) { notify(error.message, true); }
+    finally { $('modalShare').disabled = false; $('sharePostBtn').disabled = false; }
+  }
+  $('modalShare').addEventListener('click', publishPost); $('sharePostBtn').addEventListener('click', publishPost);
+  $('refreshBtn').addEventListener('click', loadFeed); $('logoutBtn').addEventListener('click', logout);
+  $('homeBtn').addEventListener('click', () => { $('feedTitle').textContent = 'Your feed'; loadFeed(); }); $('mobileHome').addEventListener('click', () => { window.scrollTo({ top: 0, behavior: 'smooth' }); loadFeed(); });
+  $('profileBtn').addEventListener('click', () => notify(currentUsername ? `Signed in as @${currentUsername}` : 'Your profile'));
+  $('mobileProfile').addEventListener('click', () => notify(currentUsername ? `Signed in as @${currentUsername}` : 'Your profile'));
+  $('notificationBtn').addEventListener('click', () => notify('You are all caught up.')); $('mobileNotifications').addEventListener('click', () => notify('You are all caught up.'));
+  $('hideSuggestions').addEventListener('click', () => notify('Suggested profiles are demo content.'));
+  document.querySelectorAll('.follow-demo').forEach(button => button.addEventListener('click', () => notify('Follow suggestions will be connected to real profiles soon.')));
+  $('mobileSearch').addEventListener('click', () => { const search = $('search'); search.style.display = 'block'; search.focus(); search.scrollIntoView({ block: 'nearest' }); });
+  $('search').addEventListener('keydown', async event => {
+    if (event.key !== 'Enter') return; const value = event.target.value.trim().replace(/^#/, ''); if (!value) return;
+    try { const posts = await api(`/posts/tag/${encodeURIComponent(value)}`); $('feedTitle').textContent = `#${value}`; $('feed').replaceChildren(); if (!posts.length) { const p = document.createElement('p'); p.className = 'empty-state'; p.textContent = `No posts found for #${value}.`; $('feed').append(p); } else posts.forEach(post => $('feed').append(makePost(post))); }
+    catch (error) { notify(error.message, true); }
+  });
+  $('homeBtn').addEventListener('click', () => { $('search').value = ''; });
+  if (token) showApp(); else showAuth();
+})();
+</script>
+</body>
+</html>
