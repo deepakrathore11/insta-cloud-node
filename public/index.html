@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>InstaCloud</title>
+<style>
+body{font-family:system-ui,sans-serif;max-width:480px;margin:auto;padding:12px;background:#fafafa;color:#222}
+input,button{padding:8px;margin:3px 0;font-size:15px}input{width:100%;box-sizing:border-box}
+button{cursor:pointer;border:0;border-radius:6px;background:#0095f6;color:#fff;padding:8px 14px}
+.card{background:#fff;border:1px solid #ddd;border-radius:8px;margin:12px 0;padding:10px}
+.card img{width:100%;border-radius:6px}#n{color:#c2185b;min-height:1.2em}
+</style></head><body>
+<h2>📸 InstaCloud</h2><div id="n"></div>
+<div id="auth">
+ <input id="u" placeholder="username"><input id="e" placeholder="email (register ke liye)">
+ <input id="p" type="password" placeholder="password">
+ <button onclick="auth(false)">Login</button> <button onclick="auth(true)">Register</button>
+</div>
+<div id="app" style="display:none">
+ <input id="f" type="file" accept="image/*"><input id="c" placeholder="Caption #hashtag">
+ <button onclick="post()">Post</button> <button onclick="logout()" style="background:#888">Logout</button>
+ <div id="feed"></div>
+</div>
+<script>
+const API="/api/v1";let token=localStorage.getItem("t");const $=id=>document.getElementById(id);
+async function api(path,opt={}){
+ opt.headers={...(opt.headers||{}),...(token?{Authorization:"Bearer "+token}:{})};
+ const res=await fetch(API+path,opt);const d=await res.json().catch(()=>({}));
+ if(!res.ok)throw new Error(d.detail||res.status);return d}
+async function auth(reg){
+ const u=$("u").value,p=$("p").value;
+ try{
+  if(reg)await api("/auth/register",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({username:u,email:$("e").value,password:p})});
+  const d=await api("/auth/login",{method:"POST",body:new URLSearchParams({username:u,password:p})});
+  token=d.access_token;localStorage.setItem("t",token);init();
+ }catch(e){alert(e.message)}}
+function logout(){localStorage.removeItem("t");location.reload()}
+async function post(){
+ const f=$("f").files[0];if(!f)return alert("Pehle photo chuno");
+ try{
+  const s=await api("/posts/upload-signature");const fd=new FormData();
+  fd.append("file",f);["api_key","timestamp","signature","folder"].forEach(k=>fd.append(k,s[k]));
+  const up=await(await fetch(`https://api.cloudinary.com/v1_1/${s.cloud_name}/image/upload`,{method:"POST",body:fd})).json();
+  if(!up.secure_url)throw new Error("Cloudinary upload fail");
+  await api("/posts",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({image_url:up.secure_url,caption:$("c").value})});
+  $("c").value="";$("f").value="";feed();
+ }catch(e){alert(e.message)}}
+async function feed(){
+ try{const d=await api("/feed");$("feed").innerHTML="";
+  d.posts.forEach(p=>{const div=document.createElement("div");div.className="card";
+   div.innerHTML='<b></b><img><p></p><button></button>';
+   div.querySelector("b").textContent="@"+p.username;div.querySelector("img").src=p.image_url;
+   div.querySelector("p").textContent=p.caption;
+   const b=div.querySelector("button");b.textContent="❤ "+p.likes_count;
+   b.onclick=async()=>{await api(`/posts/${p.post_id}/like`,{method:"POST"});feed()};
+   $("feed").appendChild(div)})
+ }catch(e){if(e.message.includes("token")){logout()}}}
+function init(){
+ if(!token)return;$("auth").style.display="none";$("app").style.display="block";feed();
+ const ws=new WebSocket((location.protocol=="https:"?"wss://":"ws://")+location.host+API+"/ws/notifications?token="+token);
+ ws.onmessage=e=>{$("n").textContent="🔔 "+JSON.parse(e.data).text}}
+init();
+</script></body></html>
