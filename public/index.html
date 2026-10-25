@@ -399,7 +399,7 @@
   }
   $('modalShare').addEventListener('click', publishPost); $('sharePostBtn').addEventListener('click', publishPost);
   $('refreshBtn').addEventListener('click', () => loadFeed(false)); $('loadMore').addEventListener('click', () => loadFeed(true)); $('logoutBtn').addEventListener('click', logout);
-  $('homeBtn').addEventListener('click', () => { $('search').value = ''; $('feedTitle').textContent = 'Global feed'; loadFeed(false); }); $('mobileHome').addEventListener('click', () => { $('feedTitle').textContent = 'Global feed'; window.scrollTo({ top: 0, behavior: 'smooth' }); loadFeed(false); });
+  $('homeBtn').addEventListener('click', () => { closeProfile(); $('search').value = ''; $('feedTitle').textContent = 'Global feed'; loadFeed(false); }); $('mobileHome').addEventListener('click', () => { closeProfile(); $('feedTitle').textContent = 'Global feed'; window.scrollTo({ top: 0, behavior: 'smooth' }); loadFeed(false); });
   $('exploreBtn').addEventListener('click', loadExplore);
   $('profileBtn').addEventListener('click', () => openProfile()); $('mobileProfile').addEventListener('click', () => openProfile());
   $('sideAvatar').addEventListener('click', () => openProfile()); $('sideUsername').addEventListener('click', () => openProfile()); $('profileBack').addEventListener('click', closeProfile);
