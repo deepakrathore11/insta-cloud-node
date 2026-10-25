@@ -45,7 +45,7 @@
       <a class="brand" href="#home">InstaCloud</a>
       <h1 id="authTitle" style="text-align:center;font-size:19px;margin:14px 0 8px">Share your world</h1>
       <p class="auth-subtitle" id="authSubtitle">Sign in to see photos and moments from your community.</p>
-      <form id="authForm">
+      <form id="authForm" method="post" action="/api/v1/auth/login">
         <input class="field" id="username" name="username" placeholder="Username" autocomplete="username" maxlength="50" required>
         <input class="field hidden" id="email" name="email" type="email" placeholder="Email address" autocomplete="email" maxlength="120">
         <input class="field" id="password" name="password" type="password" placeholder="Password" autocomplete="current-password" minlength="6" required>
