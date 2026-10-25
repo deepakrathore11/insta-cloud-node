@@ -1,3 +1,6 @@
+Warning: truncated output (original token count: 12478)
+Total output lines: 402
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -22,6 +25,7 @@
     @media(max-width:850px){.layout{grid-template-columns:minmax(0,630px);max-width:680px;justify-content:center}.right-column{display:none}.searchbox{width:min(220px,30vw)}}
     @media(max-width:560px){.topbar{height:58px}.topbar-inner{padding:0 15px;gap:10px}.brand{font-size:24px}.searchbox{display:none}.top-actions{gap:13px}.layout{margin:14px auto 82px;padding:0;display:block}.stories{border-left:0;border-right:0;border-radius:0;padding:14px 14px 12px;gap:15px;margin-bottom:12px}.post-card{border-left:0;border-right:0;border-radius:0;margin-bottom:12px}.feed-heading{padding:0 15px}.post-image{aspect-ratio:1/1;max-height:620px}.post-header{padding:12px 14px}.post-body{padding:10px 14px 14px}.mobile-nav{display:flex;position:fixed;z-index:12;bottom:0;left:0;right:0;height:58px;background:#fff;border-top:1px solid var(--line);justify-content:space-around;align-items:center;padding-bottom:env(safe-area-inset-bottom)}.mobile-nav .icon-btn{width:44px}.auth-shell{min-height:calc(100vh - 58px);padding:16px}.auth-card{border:0;box-shadow:none;padding:25px 18px}.post-image-wrap{min-height:180px}}
     @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
+    .follow-btn{border:0;background:none;color:var(--blue);font-size:12px;font-weight:700;padding:7px 4px}.follow-btn.following{color:#666}.story-item{border:0;background:none;min-width:62px;padding:0;display:flex;align-items:center;flex-direction:column;gap:8px;color:#555;font-size:11px}.story-item .story-ring{overflow:hidden}.story-item img{width:100%;height:100%;object-fit:cover;border:2px solid white;border-radius:50%}.story-item.unseen .story-ring{background:linear-gradient(45deg,#feda75,#fa7e1e,#d62976,#962fbf)}.story-item.seen .story-ring{background:#ddd}.explore-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px}.explore-tile{position:relative;aspect-ratio:1;border:0;padding:0;background:#eee;overflow:hidden}.explore-tile img{width:100%;height:100%;object-fit:cover}.explore-tile span{position:absolute;inset:auto 0 0;padding:20px 8px 8px;color:#fff;text-align:left;font-weight:700;background:linear-gradient(transparent,#0008)}.story-viewer{position:fixed;inset:0;z-index:25;background:#111;display:grid;place-items:center;padding:20px}.story-viewer-inner{position:relative;width:min(420px,100%);height:min(780px,90vh);background:#222;border-radius:14px;overflow:hidden;color:#fff}.story-viewer-inner img{width:100%;height:100%;object-fit:contain}.story-viewer-top{position:absolute;z-index:1;top:0;left:0;right:0;padding:18px;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(#0008,transparent)}.story-viewer-top button{border:0;background:none;color:white;font-size:24px}.story-viewer-caption{position:absolute;bottom:0;left:0;right:0;padding:28px 18px 20px;background:linear-gradient(transparent,#0009)}.story-nav{position:absolute;inset:56px 0 70px;display:flex;justify-content:space-between}.story-nav button{width:35%;border:0;background:transparent}.story-nav button:last-child{margin-left:auto}.story-progress{height:3px;background:#ffffff70;position:absolute;top:10px;left:12px;right:12px}.story-progress span{display:block;height:100%;width:0;background:#fff;animation:story-progress 7s linear forwards}@keyframes story-progress{to{width:100%}}.story-file{margin-top:12px}.load-more{display:block;margin:0 auto 22px}.explore-heading{display:flex;align-items:center;gap:10px;margin-bottom:14px}.explore-heading h2{font-size:16px;margin:0}
   </style>
 </head>
 <body>
@@ -31,6 +35,7 @@
       <input id="search" class="searchbox" type="search" placeholder="Search people or hashtags" aria-label="Search people or hashtags">
       <div class="top-actions" id="topActions">
         <button class="icon-btn" id="homeBtn" title="Home" aria-label="Home"><svg viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg></button>
+        <button class="icon-btn" id="exploreBtn" title="Explore" aria-label="Explore posts"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2.2 4.8-4.8 2.2 2.2-4.8z"/></svg></button>
         <button class="icon-btn" id="createBtn" title="Create a post" aria-label="Create a post"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><path d="M12 8v8M8 12h8"/></svg></button>
         <button class="icon-btn" id="notificationBtn" title="Notifications" aria-label="Notifications"><svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg></button>
         <button class="icon-btn" id="profileBtn" title="Your account" aria-label="Your account"><span class="avatar small" id="topAvatar">Y</span></button>
@@ -56,25 +61,18 @@
   <main id="appView" class="layout hidden">
     <section class="main-column" aria-label="Your feed">
       <div class="stories" id="stories" aria-label="Stories">
-        <button class="story" id="yourStory"><span class="story-ring"><span>+</span></span><span>Your story</span></button>
-        <button class="story"><span class="story-ring"><span>J</span></span><span>jordan</span></button>
-        <button class="story"><span class="story-ring"><span>M</span></span><span>maya.jpg</span></button>
-        <button class="story"><span class="story-ring"><span>A</span></span><span>alexm</span></button>
-        <button class="story"><span class="story-ring"><span>S</span></span><span>sophia</span></button>
-        <button class="story"><span class="story-ring"><span>L</span></span><span>leo.travel</span></button>
+        <button class="story" id="yourStory" type="button"><span class="story-ring"><span>+</span></span><span>Your story</span></button>
+        <div id="storyItems" style="display:flex;gap:18px"></div>
       </div>
-      <div class="feed-heading"><h1 id="feedTitle">Your feed</h1><button class="text-btn" id="refreshBtn" type="button">Refresh</button></div>
+      <div class="feed-heading"><h1 id="feedTitle">Global feed</h1><button class="text-btn" id="refreshBtn" type="button">Refresh</button></div>
       <div id="feed" aria-live="polite"></div>
+      <button class="secondary-btn load-more hidden" id="loadMore" type="button">Load older posts</button>
     </section>
     <aside class="right-column" aria-label="Your account and suggestions">
       <div class="account-row"><span class="avatar" id="sideAvatar">Y</span><div class="user-meta"><div class="username" id="sideUsername">Your account</div><div class="post-time">Welcome to InstaCloud</div></div><button class="text-btn" id="logoutBtn" type="button">Log out</button></div>
-      <div class="side-section-head"><span>Suggested for you</span><button class="text-btn" id="hideSuggestions" type="button">See all</button></div>
-      <div id="suggestions">
-        <div class="suggestion"><span class="avatar">J</span><div class="user-meta"><div class="username">jordan.lee</div><div class="post-time">Suggested for you</div></div><button class="text-btn follow-demo" type="button">Follow</button></div>
-        <div class="suggestion"><span class="avatar">M</span><div class="user-meta"><div class="username">maya.jpg</div><div class="post-time">Popular creator</div></div><button class="text-btn follow-demo" type="button">Follow</button></div>
-        <div class="suggestion"><span class="avatar">A</span><div class="user-meta"><div class="username">alex.morgan</div><div class="post-time">New to InstaCloud</div></div><button class="text-btn follow-demo" type="button">Follow</button></div>
-      </div>
-      <div class="side-footer"><a href="#about">About</a> · <a href="#help">Help</a> · <a href="#privacy">Privacy</a> · <a href="#terms">Terms</a><p>© 2026 INSTACLOUD</p><p>Stories and suggested profiles are visual placeholders in this demo.</p></div>
+      <div class="side-section-head"><span>People to follow</span><button class="text-btn" id="refreshSuggestions" type="button">Refresh</button></div>
+      <div id="suggestions"></div>
+      <div class="side-footer"><a href="#about">About</a> · <a href="#help">Help</a> · <a href="#privacy">Privacy</a> · <a href="#terms">Terms</a><p>© 2026 INSTACLOUD</p></div>
     </aside>
   </main>
 
@@ -98,6 +96,8 @@
     </section>
   </div>
   <div id="notice" class="notice" role="status" aria-live="polite"></div>
+  <div id="storyCreateModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="storyCreateTitle"><section class="modal"><div class="modal-head"><button class="modal-close" id="storyClose" aria-label="Close">×</button><span id="storyCreateTitle">Add to your story</span></div><div class="modal-content"><div class="upload-drop"><strong>Share a moment for 24 hours</strong><p>Choose a photo for your story.</p><input class="file-input story-file" id="storyFile" type="file" accept="image/*"></div><img class="preview hidden" id="storyPreview" alt="Story preview"><textarea class="caption-input" id="storyCaption" maxlength="500" placeholder="Add a caption…"></textarea></div><div class="modal-footer"><button class="secondary-btn" id="storyCancel" type="button">Cancel</button><button class="primary-btn" id="storyPublish" type="button">Post story</button></div></section></div>
+  <div id="storyViewer" class="story-viewer hidden" role="dialog" aria-modal="true" aria-label="Story"><div class="story-viewer-inner"><div class="story-progress"><span></span></div><div class="story-viewer-top"><strong id="storyViewerUser"></strong><button id="storyViewerClose" aria-label="Close story">×</button></div><img id="storyViewerImage" alt=""><div class="story-nav"><button id="storyPrev" aria-label="Previous story"></button><button id="storyNext" aria-label="Next story"></button></div><div class="story-viewer-caption" id="storyViewerCaption"></div></div></div>
 
 <script>
 (() => {
@@ -105,6 +105,12 @@
   const API = '/api/v1';
   let token = localStorage.getItem('instacloud_token') || localStorage.getItem('t');
   let currentUsername = localStorage.getItem('instacloud_username') || '';
+  let currentUserId = null;
+  let nextFeedCursor = null;
+  let storyGroups = [];
+  let activeStoryGroup = 0, activeStoryIndex = 0, activeStories = [];
+  let notificationSocket = null;
+  const notificationMessages = [];
   let registerMode = false;
   let noticeTimer;
   const $ = id => document.getElementById(id);
@@ -130,6 +136,16 @@
     const node = $('notice'); node.textContent = message; node.classList.toggle('error', error); node.classList.add('show');
     clearTimeout(noticeTimer); noticeTimer = setTimeout(() => node.classList.remove('show'), 3200);
   }
+  function connectNotifications() {
+    if (!token || !('WebSocket' in window)) return;
+    if (notificationSocket) notificationSocket.close();
+    const scheme = location.protocol === 'https:' ? 'wss:' : 'ws:';
+    notificationSocket = new WebSocket(`${scheme}//${location.host}/api/v1/ws/notifications?token=${encodeURIComponent(token)}`);
+    notificationSocket.addEventListener('message', event => {
+      try { const message = JSON.parse(event.data); if (message.text) { notificationMessages.unshift(message.text); notificationMessages.splice(5); notify(message.text); } }
+      catch { /* Ignore malformed notification events. */ }
+    });
+  }
   function setAvatar(text) {
     const letter = (text || 'Y').trim().charAt(0).toUpperCase() || 'Y';
     ['topAvatar', 'sideAvatar', 'mobileAvatar'].forEach(id => { if ($(id)) $(id).textContent = letter; });
@@ -137,51 +153,48 @@
   function showApp() {
     $('authView').classList.add('hidden'); $('appView').classList.remove('hidden'); $('mobileNav').classList.remove('hidden');
     $('sideUsername').textContent = currentUsername ? `@${currentUsername}` : 'Your account'; setAvatar(currentUsername);
-    loadFeed();
+    bootstrap();
+  }
+  async function bootstrap() {
+    try {
+      const me = await api('/auth/me'); currentUserId = me.id; currentUsername = me.username;
+      localStorage.setItem('instacloud_username', currentUsername); $('sideUsername').textContent = `@${currentUsername}`; setAvatar(currentUsername);
+      connectNotifications();
+      await Promise.all([loadFeed(false), loadStories(), loadSuggestions()]);
+    } catch (error) { if (/token|expired|unauthorized/i.test(error.message)) logout(); else notify(error.message, true); }
   }
   function showAuth() {
     $('authView').classList.remove('hidden'); $('appView').classList.add('hidden'); $('mobileNav').classList.add('hidden');
   }
   function logout() {
-    token = null; currentUsername = ''; localStorage.removeItem('instacloud_token'); localStorage.removeItem('instacloud_username'); localStorage.removeItem('t');
-    showAuth(); notify('You have been logged out.');
-  }
-  function updateAuthMode() {
-    $('email').classList.toggle('hidden', !registerMode); $('email').required = registerMode;
-    $('authTitle').textContent = registerMode ? 'Create an account' : 'Share your world';
-    $('authSubtitle').textContent = registerMode ? 'Join the community and start sharing your moments.' : 'Sign in to see photos and moments from your community.';
-    $('authSubmit').textContent = registerMode ? 'Create account' : 'Log in';
-    $('switchCopy').textContent = registerMode ? 'Already have an account?' : "Don't have an account?";
-    $('switchAuth').textContent = registerMode ? 'Log in' : 'Sign up';
-  }
-  $('switchAuth').addEventListener('click', () => { registerMode = !registerMode; updateAuthMode(); });
-  $('authForm').addEventListener('submit', async event => {
-    event.preventDefault();
-    const username = $('username').value.trim(), password = $('password').value;
-    const submit = $('authSubmit'); submit.disabled = true;
-    try {
-      if (registerMode) {
-        await api('/auth/register', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username, email: $('email').value.trim(), password }) });
-      }
-      const data = await api('/auth/login', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams({ username, password }) });
-      token = data.access_token; currentUsername = username;
-      localStorage.setItem('instacloud_token', token); localStorage.setItem('instacloud_username', username);
-      localStorage.setItem('t', token); showApp(); notify(`Welcome${registerMode ? ' to InstaCloud' : ' back'}, @${username}!`); registerMode = false; updateAuthMode();
+    if (notificationSocket) { notificationSocket.close(); notificationSocket = null; }
+    token = null; currentUser…478 tokens truncated…); registerMode = false; updateAuthMode();
     } catch (error) { notify(error.message, true); }
     finally { submit.disabled = false; }
   });
 
-  function makeAvatar(username) {
-    const el = document.createElement('span'); el.className = 'avatar small'; el.textContent = (username || '?').charAt(0).toUpperCase(); el.setAttribute('aria-hidden', 'true'); return el;
+  function makeAvatar(username, imageUrl = '') {
+    const el = document.createElement('span'); el.className = 'avatar small';
+    if (imageUrl) { const image = document.createElement('img'); image.src = imageUrl; image.alt = ''; el.append(image); }
+    else el.textContent = (username || '?').charAt(0).toUpperCase();
+    el.setAttribute('aria-hidden', 'true'); return el;
   }
   function makePost(post) {
     const article = document.createElement('article'); article.className = 'post-card';
-    const header = document.createElement('div'); header.className = 'post-header'; header.append(makeAvatar(post.username));
+    const header = document.createElement('div'); header.className = 'post-header'; header.append(makeAvatar(post.username, post.profile_pic_url));
     const meta = document.createElement('div'); meta.className = 'user-meta';
     const username = document.createElement('div'); username.className = 'username'; username.textContent = post.username ? `@${post.username}` : '@member';
     const time = document.createElement('div'); time.className = 'post-time'; time.textContent = post.created_at ? new Date(post.created_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) : 'InstaCloud';
     meta.append(username, time); header.append(meta);
-    const more = document.createElement('button'); more.className = 'more-btn'; more.type = 'button'; more.textContent = '···'; more.setAttribute('aria-label', 'More post options'); more.addEventListener('click', () => notify('More post options will be available soon.')); header.append(more);
+    if (post.user_id !== currentUserId) {
+      const follow = document.createElement('button'); follow.type = 'button'; follow.className = `follow-btn${post.following ? ' following' : ''}`; follow.textContent = post.following ? 'Following' : 'Follow';
+      follow.addEventListener('click', async () => {
+        follow.disabled = true;
+        try { const result = await api(`/users/${post.user_id}/follow`, { method: 'POST' }); post.following = result.following; follow.textContent = result.following ? 'Following' : 'Follow'; follow.classList.toggle('following', result.following); loadSuggestions(); }
+        catch (error) { notify(error.message, true); }
+        finally { follow.disabled = false; }
+      }); header.append(follow);
+    }
     const imageWrap = document.createElement('div'); imageWrap.className = 'post-image-wrap';
     const img = document.createElement('img'); img.className = 'post-image'; img.src = post.image_url; img.alt = post.caption ? `Photo posted by ${post.username}: ${post.caption}` : `Photo posted by ${post.username || 'a member'}`; img.loading = 'lazy'; img.decoding = 'async';
     img.addEventListener('error', () => { imageWrap.textContent = 'This image could not be loaded.'; imageWrap.style.padding = '40px'; imageWrap.style.color = '#777'; }); imageWrap.append(img);
@@ -189,13 +202,13 @@
     const actions = document.createElement('div'); actions.className = 'post-actions';
     const like = document.createElement('button'); like.className = 'post-action like-btn'; like.type = 'button'; like.innerHTML = `${icon('heart')}<span>Like</span>`; like.setAttribute('aria-label', 'Like post');
     const commentsButton = document.createElement('button'); commentsButton.className = 'post-action'; commentsButton.type = 'button'; commentsButton.innerHTML = `${icon('comment')}<span>Comment</span>`;
-    const send = document.createElement('button'); send.className = 'post-action'; send.type = 'button'; send.innerHTML = icon('send'); send.setAttribute('aria-label', 'Share post'); send.addEventListener('click', async () => { try { await navigator.clipboard.writeText(location.origin + '/#post-' + post.post_id); notify('Post link copied.'); } catch { notify('Copying links is not supported in this browser.', true); } });
-    const bookmark = document.createElement('button'); bookmark.className = 'post-action bookmark'; bookmark.type = 'button'; bookmark.innerHTML = icon('bookmark'); bookmark.setAttribute('aria-label', 'Save post'); bookmark.addEventListener('click', () => notify('Post saving will be available soon.'));
-    actions.append(like, commentsButton, send, bookmark);
+    const send = document.createElement('button'); send.className = 'post-action'; send.type = 'button'; send.innerHTML = `${icon('send')}<span>Share</span>`; send.setAttribute('aria-label', 'Share post'); send.addEventListener('click', async () => { const url = `${location.origin}/#post-${post.post_id}`; try { if (navigator.share) await navigator.share({ title: `Post by @${post.username}`, text: post.caption || 'See this post on InstaCloud', url }); else { await navigator.clipboard.writeText(url); notify('Post link copied.'); } } catch (error) { if (error.name !== 'AbortError') notify('Could not share this post.', true); } });
+    actions.append(like, commentsButton, send);
+    like.classList.toggle('liked', Boolean(post.liked_by_me)); like.querySelector('span').textContent = post.liked_by_me ? 'Liked' : 'Like'; like.setAttribute('aria-pressed', String(Boolean(post.liked_by_me)));
     const likes = document.createElement('p'); likes.className = 'likes-line'; likes.textContent = `${Number(post.likes_count || 0).toLocaleString()} likes`;
     const caption = document.createElement('p'); caption.className = 'caption';
     const captionUser = document.createElement('span'); captionUser.className = 'username'; captionUser.textContent = post.username ? `@${post.username}` : '@member'; caption.append(captionUser, document.createTextNode(post.caption ? ` ${post.caption}` : ''));
-    const commentsToggle = document.createElement('button'); commentsToggle.className = 'comments-toggle'; commentsToggle.type = 'button'; commentsToggle.textContent = 'View comments';
+    const commentsToggle = document.createElement('button'); commentsToggle.className = 'comments-toggle'; commentsToggle.type = 'button'; commentsToggle.textContent = post.comments_count ? `View all ${post.comments_count} comments` : 'View comments';
     const comments = document.createElement('div'); comments.className = 'comment-list hidden';
     const form = document.createElement('form'); form.className = 'comment-form hidden';
     const input = document.createElement('input'); input.className = 'comment-input'; input.maxLength = 500; input.placeholder = 'Add a comment…'; input.setAttribute('aria-label', 'Add a comment');
@@ -214,23 +227,24 @@
     form.addEventListener('submit', async event => {
       event.preventDefault(); const text = input.value.trim(); if (!text) return;
       submitComment.disabled = true;
-      try { await api(`/posts/${post.post_id}/comments`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text }) }); input.value = ''; commentsLoaded = false; await loadComments(); notify('Comment added.'); }
+      try { await api(`/posts/${post.post_id}/comments`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text }) }); input.value = ''; post.comments_count += 1; commentsLoaded = false; await loadComments(); commentsToggle.textContent = `View all ${post.comments_count} comments`; notify('Comment added.'); }
       catch (error) { notify(error.message, true); }
       finally { submitComment.disabled = false; }
     });
     like.addEventListener('click', async () => {
       like.disabled = true;
-      try { const result = await api(`/posts/${post.post_id}/like`, { method: 'POST' }); likes.textContent = `${Number(result.likes_count || 0).toLocaleString()} likes`; like.classList.toggle('liked', result.liked); like.querySelector('span').textContent = result.liked ? 'Liked' : 'Like'; }
+      try { const result = await api(`/posts/${post.post_id}/like`, { method: 'POST' }); post.liked_by_me = result.liked; likes.textContent = `${Number(result.likes_count || 0).toLocaleString()} likes`; like.classList.toggle('liked', result.liked); like.setAttribute('aria-pressed', String(result.liked)); like.querySelector('span').textContent = result.liked ? 'Liked' : 'Like'; }
       catch (error) { notify(error.message, true); }
       finally { like.disabled = false; }
     });
     body.append(actions, likes, caption, commentsToggle, comments, form); article.append(header, imageWrap, body); article.id = `post-${post.post_id}`; return article;
   }
-  async function loadFeed() {
+  async function loadFeed(append = false) {
     const feed = $('feed'); feed.setAttribute('aria-busy', 'true');
     try {
-      const data = await api('/feed'); feed.replaceChildren();
-      if (!data.posts || !data.posts.length) {
+      const query = new URLSearchParams({ limit: '20' }); if (append && nextFeedCursor) { query.set('before', nextFeedCursor.created_at); query.set('before_id', nextFeedCursor.post_id); }
+      const data = await api(`/feed?${query}`); if (!append) feed.replaceChildren(); nextFeedCursor = data.next_cursor;
+      if (!append && (!data.posts || !data.posts.length)) {
         const empty = document.createElement('section'); empty.className = 'empty-state';
         const glyph = document.createElement('div'); glyph.className = 'empty-icon'; glyph.innerHTML = icon('heart');
         const title = document.createElement('h2'); title.textContent = 'Your feed is waiting';
@@ -238,14 +252,80 @@
         const button = document.createElement('button'); button.className = 'primary-btn'; button.type = 'button'; button.textContent = 'Create your first post'; button.addEventListener('click', openCreate);
         empty.append(glyph, title, description, button); feed.append(empty);
       } else data.posts.forEach(post => feed.append(makePost(post)));
+      $('loadMore').classList.toggle('hidden', !nextFeedCursor);
     } catch (error) {
       if (/token|expired|unauthorized/i.test(error.message)) logout();
       else { feed.replaceChildren(); const empty = document.createElement('div'); empty.className = 'empty-state'; const title = document.createElement('h2'); title.textContent = 'We could not load your feed'; const desc = document.createElement('p'); desc.textContent = error.message; const retry = document.createElement('button'); retry.className = 'primary-btn'; retry.textContent = 'Try again'; retry.addEventListener('click', loadFeed); empty.append(title, desc, retry); feed.append(empty); }
     } finally { feed.setAttribute('aria-busy', 'false'); }
   }
+  async function loadSuggestions() {
+    try {
+      const accounts = await api('/users/suggestions'); const root = $('suggestions'); root.replaceChildren();
+      if (!accounts.length) { const note = document.createElement('p'); note.className = 'muted'; note.textContent = 'You are following everyone here.'; root.append(note); return; }
+      accounts.forEach(account => {
+        const row = document.createElement('div'); row.className = 'suggestion'; row.append(makeAvatar(account.username, account.profile_pic_url));
+        const meta = document.createElement('div'); meta.className = 'user-meta'; const name = document.createElement('div'); name.className = 'username'; name.textContent = `@${account.username}`;
+        const detail = document.createElement('div'); detail.className = 'post-time'; detail.textContent = `${account.followers} followers`; meta.append(name, detail);
+        const follow = document.createElement('button'); follow.type = 'button'; follow.className = 'follow-btn'; follow.textContent = 'Follow';
+        follow.addEventListener('click', async () => { follow.disabled = true; try { await api(`/users/${account.id}/follow`, { method: 'POST' }); row.remove(); if (!root.children.length) loadSuggestions(); } catch (error) { notify(error.message, true); } finally { follow.disabled = false; } });
+        row.append(meta, follow); root.append(row);
+      });
+    } catch (error) { notify(error.message, true); }
+  }
+  async function loadStories() {
+    try {
+      storyGroups = await api('/stories'); const root = $('storyItems'); root.replaceChildren();
+      storyGroups.forEach((group, groupIndex) => {
+        const button = document.createElement('button'); button.type = 'button'; button.className = 'story-item unseen'; button.setAttribute('aria-label', `View ${group.username}'s story`);
+        const ring = document.createElement('span'); ring.className = 'story-ring';
+        if (group.profile_pic_url) { const img = document.createElement('img'); img.src = group.profile_pic_url; img.alt = ''; ring.append(img); }
+        else { const letter = document.createElement('span'); letter.textContent = group.username.slice(0, 1).toUpperCase(); ring.append(letter); }
+        const label = document.createElement('span'); label.textContent = group.username; button.append(ring, label); button.addEventListener('click', () => openStory(groupIndex, 0)); root.append(button);
+      });
+    } catch (error) { notify(error.message, true); }
+  }
+  function openStory(groupIndex, storyIndex) {
+    activeStoryGroup = groupIndex; activeStoryIndex = storyIndex; activeStories = storyGroups[groupIndex]?.stories || [];
+    if (!activeStories.length) return;
+    const story = activeStories[activeStoryIndex]; $('storyViewerUser').textContent = `@${story.username}`; $('storyViewerImage').src = story.image_url;
+    $('storyViewerImage').alt = story.caption || `Story by ${story.username}`; $('storyViewerCaption').textContent = story.caption || '';
+    const progress = document.querySelector('.story-progress span'); progress.style.animation = 'none'; progress.offsetHeight; progress.style.animation = '';
+    $('storyViewer').classList.remove('hidden'); clearTimeout(window.storyAdvanceTimer); window.storyAdvanceTimer = setTimeout(nextStory, 7000);
+  }
+  function nextStory() {
+    if (activeStoryIndex + 1 < activeStories.length) return openStory(activeStoryGroup, activeStoryIndex + 1);
+    if (activeStoryGroup + 1 < storyGroups.length) return openStory(activeStoryGroup + 1, 0);
+    closeStory();
+  }
+  function previousStory() {
+    if (activeStoryIndex > 0) return openStory(activeStoryGroup, activeStoryIndex - 1);
+    if (activeStoryGroup > 0) return openStory(activeStoryGroup - 1, storyGroups[activeStoryGroup - 1].stories.length - 1);
+  }
+  function closeStory() { clearTimeout(window.storyAdvanceTimer); $('storyViewer').classList.add('hidden'); $('storyViewerImage').removeAttribute('src'); }
+  async function loadExplore() {
+    $('feedTitle').textContent = 'Explore'; $('loadMore').classList.add('hidden'); $('feed').replaceChildren();
+    try {
+      const data = await api('/explore');
+      if (!data.posts.length) { const p = document.createElement('p'); p.className = 'empty-state'; p.textContent = 'Posts from the community will appear here.'; $('feed').append(p); return; }
+      const grid = document.createElement('div'); grid.className = 'explore-grid';
+      data.posts.forEach(post => { const tile = document.createElement('button'); tile.className = 'explore-tile'; tile.type = 'button'; const image = document.createElement('img'); image.src = post.image_url; image.alt = post.caption || `Post by ${post.username}`; image.loading = 'lazy'; const label = document.createElement('span'); label.textContent = `♥ ${post.likes_count}`; tile.append(image, label); tile.addEventListener('click', () => { $('feed').replaceChildren(makePost(post)); $('feed').scrollIntoView({ behavior: 'smooth', block: 'start' }); }); grid.append(tile); }); $('feed').append(grid);
+    } catch (error) { notify(error.message, true); }
+  }
+  async function search(value) {
+    const query = value.trim(); if (!query) return;
+    if (query.startsWith('#')) {
+      const tag = query.slice(1); try { const posts = await api(`/posts/tag/${encodeURIComponent(tag)}`); $('feedTitle').textContent = `#${tag}`; $('feed').replaceChildren(); $('loadMore').classList.add('hidden'); if (!posts.length) { const p = document.createElement('p'); p.className = 'empty-state'; p.textContent = `No posts found for #${tag}.`; $('feed').append(p); } else posts.forEach(post => $('feed').append(makePost(post))); } catch (error) { notify(error.message, true); }
+      return;
+    }
+    try {
+      const accounts = await api(`/users/search?q=${encodeURIComponent(query)}`); $('feedTitle').textContent = `People matching “${query}”`; $('feed').replaceChildren(); $('loadMore').classList.add('hidden');
+      if (!accounts.length) { const p = document.createElement('p'); p.className = 'empty-state'; p.textContent = 'No accounts found.'; $('feed').append(p); return; }
+      accounts.forEach(account => { const row = document.createElement('div'); row.className = 'suggestion'; row.style.cssText = 'background:#fff;padding:14px;border:1px solid var(--line);border-radius:10px;margin-bottom:8px'; row.append(makeAvatar(account.username, account.profile_pic_url)); const name = document.createElement('strong'); name.textContent = `@${account.username}`; const button = document.createElement('button'); button.className = 'follow-btn'; button.type = 'button'; button.textContent = account.following ? 'Following' : 'Follow'; button.classList.toggle('following', account.following); button.addEventListener('click', async () => { try { const result = await api(`/users/${account.id}/follow`, { method: 'POST' }); account.following = result.following; button.textContent = result.following ? 'Following' : 'Follow'; button.classList.toggle('following', result.following); } catch (error) { notify(error.message, true); } }); row.append(name, button); $('feed').append(row); });
+    } catch (error) { notify(error.message, true); }
+  }
   function openCreate() { $('createModal').classList.remove('hidden'); $('photoFile').focus(); }
   function closeCreate() { $('createModal').classList.add('hidden'); $('photoFile').value = ''; $('captionInput').value = ''; $('photoPreview').classList.add('hidden'); $('photoPreview').removeAttribute('src'); }
-  $('createBtn').addEventListener('click', openCreate); $('mobileCreate').addEventListener('click', openCreate); $('yourStory').addEventListener('click', openCreate);
+  $('createBtn').addEventListener('click', openCreate); $('mobileCreate').addEventListener('click', openCreate); $('yourStory').addEventListener('click', openStoryCreate);
   $('closeModal').addEventListener('click', closeCreate); $('cancelPost').addEventListener('click', closeCreate);
   $('createModal').addEventListener('click', event => { if (event.target === $('createModal')) closeCreate(); });
   $('photoFile').addEventListener('change', () => { const file = $('photoFile').files[0]; if (!file) return; if (!file.type.startsWith('image/')) { notify('Please choose an image file.', true); $('photoFile').value = ''; return; } const preview = $('photoPreview'); preview.src = URL.createObjectURL(file); preview.classList.remove('hidden'); });
@@ -265,22 +345,38 @@
     finally { $('modalShare').disabled = false; $('sharePostBtn').disabled = false; }
   }
   $('modalShare').addEventListener('click', publishPost); $('sharePostBtn').addEventListener('click', publishPost);
-  $('refreshBtn').addEventListener('click', loadFeed); $('logoutBtn').addEventListener('click', logout);
-  $('homeBtn').addEventListener('click', () => { $('feedTitle').textContent = 'Your feed'; loadFeed(); }); $('mobileHome').addEventListener('click', () => { window.scrollTo({ top: 0, behavior: 'smooth' }); loadFeed(); });
+  $('refreshBtn').addEventListener('click', () => loadFeed(false)); $('loadMore').addEventListener('click', () => loadFeed(true)); $('logoutBtn').addEventListener('click', logout);
+  $('homeBtn').addEventListener('click', () => { $('search').value = ''; $('feedTitle').textContent = 'Global feed'; loadFeed(false); }); $('mobileHome').addEventListener('click', () => { $('feedTitle').textContent = 'Global feed'; window.scrollTo({ top: 0, behavior: 'smooth' }); loadFeed(false); });
+  $('exploreBtn').addEventListener('click', loadExplore);
   $('profileBtn').addEventListener('click', () => notify(currentUsername ? `Signed in as @${currentUsername}` : 'Your profile'));
   $('mobileProfile').addEventListener('click', () => notify(currentUsername ? `Signed in as @${currentUsername}` : 'Your profile'));
-  $('notificationBtn').addEventListener('click', () => notify('You are all caught up.')); $('mobileNotifications').addEventListener('click', () => notify('You are all caught up.'));
-  $('hideSuggestions').addEventListener('click', () => notify('Suggested profiles are demo content.'));
-  document.querySelectorAll('.follow-demo').forEach(button => button.addEventListener('click', () => notify('Follow suggestions will be connected to real profiles soon.')));
-  $('mobileSearch').addEventListener('click', () => { const search = $('search'); search.style.display = 'block'; search.focus(); search.scrollIntoView({ block: 'nearest' }); });
-  $('search').addEventListener('keydown', async event => {
-    if (event.key !== 'Enter') return; const value = event.target.value.trim().replace(/^#/, ''); if (!value) return;
-    try { const posts = await api(`/posts/tag/${encodeURIComponent(value)}`); $('feedTitle').textContent = `#${value}`; $('feed').replaceChildren(); if (!posts.length) { const p = document.createElement('p'); p.className = 'empty-state'; p.textContent = `No posts found for #${value}.`; $('feed').append(p); } else posts.forEach(post => $('feed').append(makePost(post))); }
-    catch (error) { notify(error.message, true); }
+  function showNotifications() { notify(notificationMessages.length ? notificationMessages.join(' · ') : 'You are all caught up.'); }
+  $('notificationBtn').addEventListener('click', showNotifications); $('mobileNotifications').addEventListener('click', showNotifications);
+  $('refreshSuggestions').addEventListener('click', loadSuggestions);
+  $('search').addEventListener('keydown', event => { if (event.key === 'Enter') search(event.target.value); });
+  $('mobileSearch').addEventListener('click', () => { const searchBox = $('search'); searchBox.style.display = 'block'; searchBox.focus(); searchBox.scrollIntoView({ block: 'nearest' }); });
+  function openStoryCreate() { $('storyCreateModal').classList.remove('hidden'); $('storyFile').focus(); }
+  function closeStoryCreate() { $('storyCreateModal').classList.add('hidden'); $('storyFile').value = ''; $('storyCaption').value = ''; $('storyPreview').classList.add('hidden'); $('storyPreview').removeAttribute('src'); }
+  $('storyClose').addEventListener('click', closeStoryCreate); $('storyCancel').addEventListener('click', closeStoryCreate);
+  $('storyCreateModal').addEventListener('click', event => { if (event.target === $('storyCreateModal')) closeStoryCreate(); });
+  $('storyFile').addEventListener('change', () => { const file = $('storyFile').files[0]; if (!file) return; if (!file.type.startsWith('image/')) { notify('Choose an image for your story.', true); $('storyFile').value = ''; return; } const preview = $('storyPreview'); preview.src = URL.createObjectURL(file); preview.classList.remove('hidden'); });
+  $('storyPublish').addEventListener('click', async () => {
+    const file = $('storyFile').files[0]; if (!file) return notify('Choose a photo for your story.', true); if (file.size > 10 * 1024 * 1024) return notify('Choose an image smaller than 10 MB.', true);
+    const button = $('storyPublish'); button.disabled = true;
+    try {
+      const sig = await api('/stories/upload-signature'); const form = new FormData(); form.append('file', file); ['api_key', 'timestamp', 'signature', 'folder'].forEach(key => form.append(key, sig[key]));
+      const response = await fetch(`https://api.cloudinary.com/v1_1/${sig.cloud_name}/image/upload`, { method: 'POST', body: form }); const uploaded = await response.json().catch(() => ({}));
+      if (!response.ok || !uploaded.secure_url) throw new Error(uploaded.error?.message || 'Story upload failed.');
+      await api('/stories', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ image_url: uploaded.secure_url, caption: $('storyCaption').value.trim() }) });
+      closeStoryCreate(); await loadStories(); notify('Your story is live for 24 hours.');
+    } catch (error) { notify(error.message, true); } finally { button.disabled = false; }
   });
-  $('homeBtn').addEventListener('click', () => { $('search').value = ''; });
+  $('storyViewerClose').addEventListener('click', closeStory); $('storyNext').addEventListener('click', nextStory); $('storyPrev').addEventListener('click', previousStory);
+  $('storyViewer').addEventListener('click', event => { if (event.target === $('storyViewer')) closeStory(); });
+  document.addEventListener('keydown', event => { if (event.key === 'Escape') { closeStory(); closeStoryCreate(); } else if (!$('storyViewer').classList.contains('hidden') && event.key === 'ArrowRight') nextStory(); else if (!$('storyViewer').classList.contains('hidden') && event.key === 'ArrowLeft') previousStory(); });
   if (token) showApp(); else showAuth();
 })();
 </script>
 </body>
 </html>
+

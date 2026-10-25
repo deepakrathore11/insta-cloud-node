@@ -1,7 +1,30 @@
 // User profiles and social graph.
 const router = require("express").Router();
-const { pool } = require("../db");
+const { pool, redis } = require("../db");
 const { auth } = require("../middleware/auth");
+
+router.get("/suggestions", auth, async (req, res) => {
+  const { rows } = await pool.query(
+    `SELECT u.user_id AS id, u.username, u.profile_pic_url,
+       (SELECT count(*) FROM follows f WHERE f.following_id=u.user_id)::int AS followers
+     FROM users u
+     WHERE u.user_id <> $1
+       AND NOT EXISTS (SELECT 1 FROM follows f WHERE f.follower_id=$1 AND f.following_id=u.user_id)
+     ORDER BY (SELECT count(*) FROM posts p WHERE p.user_id=u.user_id) DESC, u.created_at DESC
+     LIMIT 8`, [req.user.user_id]);
+  res.json(rows);
+});
+
+router.get("/search", auth, async (req, res) => {
+  const query = String(req.query.q || "").trim().replace(/^@/, "").slice(0, 50);
+  if (!query) return res.json([]);
+  const { rows } = await pool.query(
+    `SELECT u.user_id AS id, u.username, u.profile_pic_url,
+      EXISTS(SELECT 1 FROM follows f WHERE f.follower_id=$1 AND f.following_id=u.user_id) AS following
+     FROM users u WHERE u.user_id <> $1 AND u.username ILIKE $2
+     ORDER BY u.username LIMIT 10`, [req.user.user_id, `%${query}%`]);
+  res.json(rows);
+});
 
 router.get("/:username", async (req, res) => {
   const { rows } = await pool.query(
@@ -14,18 +37,28 @@ router.get("/:username", async (req, res) => {
   res.json(rows[0]);
 });
 
+router.get("/:username/following", auth, async (req, res) => {
+  const { rows } = await pool.query(
+    `SELECT EXISTS(SELECT 1 FROM follows f JOIN users u ON u.user_id=f.following_id
+      WHERE f.follower_id=$1 AND u.username=$2) AS following`, [req.user.user_id, req.params.username]);
+  res.json(rows[0]);
+});
+
 router.post("/:id/follow", auth, async (req, res) => {
   const target = parseInt(req.params.id, 10), me = req.user.user_id;
+  if (!Number.isInteger(target)) return res.status(400).json({ detail: "Invalid user id." });
   if (target === me) return res.status(400).json({ detail: "You cannot follow your own account." });
+  const exists = await pool.query("SELECT 1 FROM users WHERE user_id=$1", [target]);
+  if (!exists.rowCount) return res.status(404).json({ detail: "User not found" });
   const del = await pool.query("DELETE FROM follows WHERE follower_id=$1 AND following_id=$2", [me, target]);
   if (del.rowCount) return res.json({ following: false });
-  try {
-    await pool.query("INSERT INTO follows(follower_id,following_id) VALUES($1,$2)", [me, target]);
-    res.json({ following: true });
-  } catch (e) {
-    if (e.code === "23503") return res.status(404).json({ detail: "User not found" });
-    throw e;
+  const inserted = await pool.query("INSERT INTO follows(follower_id,following_id) VALUES($1,$2) ON CONFLICT DO NOTHING", [me, target]);
+  if (inserted.rowCount) {
+    const actor = (await pool.query("SELECT username FROM users WHERE user_id=$1", [me])).rows[0];
+    redis.publish(`notifications:user:${target}`, JSON.stringify({ text: `${actor.username} started following you` })).catch(() => {});
   }
+  res.json({ following: true });
 });
 
 module.exports = router;
+

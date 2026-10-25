@@ -27,4 +27,11 @@ router.post("/login", async (req, res) => {
   res.json({ access_token: sign(rows[0].user_id), token_type: "bearer" });
 });
 
+router.get("/me", require("../middleware/auth").auth, async (req, res) => {
+  const { rows } = await pool.query(
+    "SELECT user_id AS id, username, email, bio, profile_pic_url FROM users WHERE user_id=$1", [req.user.user_id]);
+  res.json(rows[0]);
+});
+
 module.exports = router;
+
