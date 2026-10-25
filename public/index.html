@@ -1,6 +1,3 @@
-Warning: truncated output (original token count: 12478)
-Total output lines: 402
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -48,7 +45,7 @@ Total output lines: 402
       <a class="brand" href="#home">InstaCloud</a>
       <h1 id="authTitle" style="text-align:center;font-size:19px;margin:14px 0 8px">Share your world</h1>
       <p class="auth-subtitle" id="authSubtitle">Sign in to see photos and moments from your community.</p>
-      <form id="authForm">
+      <form id="authForm" method="post" action="/api/v1/auth/login">
         <input class="field" id="username" name="username" placeholder="Username" autocomplete="username" maxlength="50" required>
         <input class="field hidden" id="email" name="email" type="email" placeholder="Email address" autocomplete="email" maxlength="120">
         <input class="field" id="password" name="password" type="password" placeholder="Password" autocomplete="current-password" minlength="6" required>
@@ -168,7 +165,30 @@ Total output lines: 402
   }
   function logout() {
     if (notificationSocket) { notificationSocket.close(); notificationSocket = null; }
-    token = null; currentUser…478 tokens truncated…); registerMode = false; updateAuthMode();
+    token = null; currentUsername = ''; currentUserId = null; localStorage.removeItem('instacloud_token'); localStorage.removeItem('instacloud_username'); localStorage.removeItem('t');
+    showAuth(); notify('You have been logged out.');
+  }
+  function updateAuthMode() {
+    $('email').classList.toggle('hidden', !registerMode); $('email').required = registerMode;
+    $('authTitle').textContent = registerMode ? 'Create an account' : 'Share your world';
+    $('authSubtitle').textContent = registerMode ? 'Join the community and start sharing your moments.' : 'Sign in to see photos and moments from your community.';
+    $('authSubmit').textContent = registerMode ? 'Create account' : 'Log in';
+    $('switchCopy').textContent = registerMode ? 'Already have an account?' : "Don't have an account?";
+    $('switchAuth').textContent = registerMode ? 'Log in' : 'Sign up';
+  }
+  $('switchAuth').addEventListener('click', () => { registerMode = !registerMode; updateAuthMode(); });
+  $('authForm').addEventListener('submit', async event => {
+    event.preventDefault();
+    const username = $('username').value.trim(), password = $('password').value;
+    const submit = $('authSubmit'); submit.disabled = true;
+    try {
+      if (registerMode) {
+        await api('/auth/register', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username, email: $('email').value.trim(), password }) });
+      }
+      const data = await api('/auth/login', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams({ username, password }) });
+      token = data.access_token; currentUsername = username;
+      localStorage.setItem('instacloud_token', token); localStorage.setItem('instacloud_username', username);
+      localStorage.setItem('t', token); showApp(); notify(`Welcome${registerMode ? ' to InstaCloud' : ' back'}, @${username}!`); registerMode = false; updateAuthMode();
     } catch (error) { notify(error.message, true); }
     finally { submit.disabled = false; }
   });
