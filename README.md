@@ -5,16 +5,16 @@ An Instagram-inspired social sharing app built with Node.js, Express, PostgreSQL
 ## Features
 
 - Account registration and login
-- Responsive global photo feed showing the latest public posts from every account
-- Feed is available to signed-in users and refreshes from PostgreSQL so new public posts appear on reload
+- Responsive global photo feed showing recent public posts from every account, with cursor-based loading for older posts
+- Explore page ranked by likes and recency
 - Modern social-media layout
 - Image uploads through signed Cloudinary requests
 - Captions and hashtag extraction
-- Like and comment interactions
-- Redis-backed feed caching and real-time notification infrastructure
+- Persistent like state, comments, native share links, and hashtag search
+- Real account search, follow/unfollow controls, and suggestions based on active accounts
+- Stories with photo uploads, captions, a viewer, and automatic 24-hour expiry
+- Redis-backed real-time notification infrastructure
 - Mobile-friendly navigation and accessible form controls
-
-Some interface elements, including stories, suggested profiles, bookmarks, and notification panels, are currently visual placeholders and are not connected to backend features.
 
 ## Requirements
 
@@ -47,3 +47,4 @@ Deploy the Node.js service on your preferred hosting provider. Set the environme
 ## Security notes
 
 Use a strong, unique `JWT_SECRET` in production. Keep database credentials and Cloudinary secrets private, enable HTTPS, and configure CORS for your production domain instead of allowing every origin.
+

@@ -48,7 +48,7 @@ server.on("upgrade", (req, socket, head) => {
     const sub = redis.duplicate();
     sub.on("error", () => {});
     sub.subscribe(`notifications:user:${uid}`).catch(() => {});
-    sub.on("message", (_ch, msg) => ws.send(msg));
+    sub.on("message", (_ch, msg) => { if (ws.readyState === 1) ws.send(msg); });
     ws.on("close", () => sub.quit().catch(() => {}));
   });
 });
@@ -57,3 +57,4 @@ const PORT = process.env.PORT || 8000;
 initDb()
   .then(() => server.listen(PORT, () => console.log(`InstaCloud is running at http://localhost:${PORT}`)))
   .catch((e) => { console.error("Database connection failed. Check DATABASE_URL:", e.message); process.exit(1); });
+

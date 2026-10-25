@@ -55,12 +55,21 @@ CREATE TABLE IF NOT EXISTS comments(
   user_id INT NOT NULL REFERENCES users ON DELETE CASCADE,
   comment_text VARCHAR(500) NOT NULL,
   created_at TIMESTAMPTZ DEFAULT now());
+CREATE TABLE IF NOT EXISTS stories(
+  story_id SERIAL PRIMARY KEY,
+  user_id INT NOT NULL REFERENCES users ON DELETE CASCADE,
+  image_url TEXT NOT NULL,
+  caption VARCHAR(500) DEFAULT '',
+  created_at TIMESTAMPTZ DEFAULT now(),
+  expires_at TIMESTAMPTZ NOT NULL DEFAULT (now() + interval '24 hours'));
 CREATE INDEX IF NOT EXISTS idx_posts_user_created ON posts(user_id, created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_posts_hashtags_gin ON posts USING GIN (hashtags);
 CREATE INDEX IF NOT EXISTS idx_follows_following_id ON follows(following_id);
 CREATE INDEX IF NOT EXISTS idx_comments_post_created ON comments(post_id, created_at);
+CREATE INDEX IF NOT EXISTS idx_stories_expires ON stories(expires_at DESC);
 `;
 
 const initDb = () => pool.query(SCHEMA);
 
 module.exports = { pool, redis, cloudinary, initDb };
+

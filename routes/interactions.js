@@ -10,19 +10,21 @@ async function notify(ownerId, me, text) {
 
 router.post("/posts/:id/like", auth, async (req, res) => {
   const pid = parseInt(req.params.id, 10), me = req.user.user_id;
-  const post = (await pool.query("SELECT user_id FROM posts WHERE post_id=$1", [pid])).rows[0];
-  if (!post) return res.status(404).json({ detail: "Post not found" });
-  const del = await pool.query("DELETE FROM likes WHERE user_id=$1 AND post_id=$2", [me, pid]);
-  let liked = false, q;
-  if (del.rowCount) {
-    q = await pool.query("UPDATE posts SET likes_count=GREATEST(likes_count-1,0) WHERE post_id=$1 RETURNING likes_count", [pid]);
-  } else {
-    await pool.query("INSERT INTO likes(user_id,post_id) VALUES($1,$2)", [me, pid]); // The composite primary key prevents duplicate likes.
-    q = await pool.query("UPDATE posts SET likes_count=likes_count+1 WHERE post_id=$1 RETURNING likes_count", [pid]);
-    liked = true;
-    notify(post.user_id, req.user, "liked your post");
-  }
-  res.json({ liked, likes_count: q.rows[0].likes_count });
+  if (!Number.isInteger(pid)) return res.status(400).json({ detail: "Invalid post id." });
+  const client = await pool.connect();
+  try {
+    await client.query("BEGIN");
+    const post = (await client.query("SELECT user_id FROM posts WHERE post_id=$1 FOR UPDATE", [pid])).rows[0];
+    if (!post) { await client.query("ROLLBACK"); return res.status(404).json({ detail: "Post not found" }); }
+    const del = await client.query("DELETE FROM likes WHERE user_id=$1 AND post_id=$2", [me, pid]);
+    const liked = !del.rowCount;
+    if (liked) await client.query("INSERT INTO likes(user_id,post_id) VALUES($1,$2) ON CONFLICT DO NOTHING", [me, pid]);
+    const q = await client.query("UPDATE posts SET likes_count=(SELECT count(*) FROM likes WHERE post_id=$1) WHERE post_id=$1 RETURNING likes_count", [pid]);
+    await client.query("COMMIT");
+    if (liked) notify(post.user_id, req.user, "liked your post");
+    res.json({ liked, likes_count: q.rows[0].likes_count });
+  } catch (error) { await client.query("ROLLBACK"); throw error; }
+  finally { client.release(); }
 });
 
 router.post("/posts/:id/comments", auth, async (req, res) => {
@@ -44,3 +46,4 @@ router.get("/posts/:id/comments", async (req, res) => {
 });
 
 module.exports = router;
+
