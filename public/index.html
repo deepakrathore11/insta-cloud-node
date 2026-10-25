@@ -22,10 +22,11 @@
     @media(max-width:850px){.layout{grid-template-columns:minmax(0,630px);max-width:680px;justify-content:center}.right-column{display:none}.searchbox{width:min(220px,30vw)}}
     @media(max-width:560px){.topbar{height:58px}.topbar-inner{padding:0 15px;gap:10px}.brand{font-size:24px}.searchbox{display:none}.top-actions{gap:13px}.layout{margin:14px auto 82px;padding:0;display:block}.stories{border-left:0;border-right:0;border-radius:0;padding:14px 14px 12px;gap:15px;margin-bottom:12px}.post-card{border-left:0;border-right:0;border-radius:0;margin-bottom:12px}.feed-heading{padding:0 15px}.post-image{aspect-ratio:1/1;max-height:620px}.post-header{padding:12px 14px}.post-body{padding:10px 14px 14px}.mobile-nav{display:flex;position:fixed;z-index:12;bottom:0;left:0;right:0;height:58px;background:#fff;border-top:1px solid var(--line);justify-content:space-around;align-items:center;padding-bottom:env(safe-area-inset-bottom)}.mobile-nav .icon-btn{width:44px}.auth-shell{min-height:calc(100vh - 58px);padding:16px}.auth-card{border:0;box-shadow:none;padding:25px 18px}.post-image-wrap{min-height:180px}}
     @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
+    body.auth-mode .topbar{display:none}.auth-shell{min-height:100vh}.avatar-button{border:0;padding:0;cursor:pointer}.profile-page{grid-column:1/-1;width:min(900px,100%);margin:0 auto}.profile-back{border:0;background:none;color:var(--blue);font-weight:700;padding:0 0 22px}.profile-header{display:flex;align-items:center;gap:54px;padding:20px 8% 32px;border-bottom:1px solid var(--line)}.profile-avatar{width:150px;height:150px;border-radius:50%;display:grid;place-items:center;overflow:hidden;background:linear-gradient(135deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5);color:#fff;font-size:52px;font-weight:700;flex-shrink:0}.profile-avatar img{width:100%;height:100%;object-fit:cover}.profile-details{min-width:0}.profile-details h1{font-size:22px;font-weight:400;margin:0 0 24px}.profile-stats{display:flex;gap:38px;margin-bottom:18px}.profile-stats span{color:var(--ink)}.profile-stats strong{font-weight:700}.profile-bio{line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere}.profile-section-title{font-size:12px;letter-spacing:1px;text-transform:uppercase;text-align:center;border-top:1px solid var(--line);padding:18px}.profile-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px}.profile-tile{aspect-ratio:1;border:0;padding:0;background:#eee;overflow:hidden;cursor:pointer}.profile-tile img{width:100%;height:100%;object-fit:cover}.profile-focus{max-width:630px;margin:0 auto}.profile-empty{padding:50px 20px;text-align:center;color:var(--muted)}@media(max-width:560px){.auth-shell{min-height:100vh}.profile-header{gap:22px;padding:14px 16px 24px}.profile-avatar{width:86px;height:86px;font-size:32px}.profile-details h1{font-size:18px;margin-bottom:16px}.profile-stats{gap:14px;font-size:12px;flex-wrap:wrap}.profile-page{margin-top:0}.profile-back{padding:0 15px 14px}}
     .follow-btn{border:0;background:none;color:var(--blue);font-size:12px;font-weight:700;padding:7px 4px}.follow-btn.following{color:#666}.story-item{border:0;background:none;min-width:62px;padding:0;display:flex;align-items:center;flex-direction:column;gap:8px;color:#555;font-size:11px}.story-item .story-ring{overflow:hidden}.story-item img{width:100%;height:100%;object-fit:cover;border:2px solid white;border-radius:50%}.story-item.unseen .story-ring{background:linear-gradient(45deg,#feda75,#fa7e1e,#d62976,#962fbf)}.story-item.seen .story-ring{background:#ddd}.explore-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px}.explore-tile{position:relative;aspect-ratio:1;border:0;padding:0;background:#eee;overflow:hidden}.explore-tile img{width:100%;height:100%;object-fit:cover}.explore-tile span{position:absolute;inset:auto 0 0;padding:20px 8px 8px;color:#fff;text-align:left;font-weight:700;background:linear-gradient(transparent,#0008)}.story-viewer{position:fixed;inset:0;z-index:25;background:#111;display:grid;place-items:center;padding:20px}.story-viewer-inner{position:relative;width:min(420px,100%);height:min(780px,90vh);background:#222;border-radius:14px;overflow:hidden;color:#fff}.story-viewer-inner img{width:100%;height:100%;object-fit:contain}.story-viewer-top{position:absolute;z-index:1;top:0;left:0;right:0;padding:18px;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(#0008,transparent)}.story-viewer-top button{border:0;background:none;color:white;font-size:24px}.story-viewer-caption{position:absolute;bottom:0;left:0;right:0;padding:28px 18px 20px;background:linear-gradient(transparent,#0009)}.story-nav{position:absolute;inset:56px 0 70px;display:flex;justify-content:space-between}.story-nav button{width:35%;border:0;background:transparent}.story-nav button:last-child{margin-left:auto}.story-progress{height:3px;background:#ffffff70;position:absolute;top:10px;left:12px;right:12px}.story-progress span{display:block;height:100%;width:0;background:#fff;animation:story-progress 7s linear forwards}@keyframes story-progress{to{width:100%}}.story-file{margin-top:12px}.load-more{display:block;margin:0 auto 22px}.explore-heading{display:flex;align-items:center;gap:10px;margin-bottom:14px}.explore-heading h2{font-size:16px;margin:0}
   </style>
 </head>
-<body>
+<body class="auth-mode">
   <header class="topbar">
     <div class="topbar-inner">
       <a class="brand" href="#home" aria-label="InstaCloud home">InstaCloud</a>
@@ -56,7 +57,7 @@
   </main>
 
   <main id="appView" class="layout hidden">
-    <section class="main-column" aria-label="Your feed">
+    <section id="mainColumn" class="main-column" aria-label="Your feed">
       <div class="stories" id="stories" aria-label="Stories">
         <button class="story" id="yourStory" type="button"><span class="story-ring"><span>+</span></span><span>Your story</span></button>
         <div id="storyItems" style="display:flex;gap:18px"></div>
@@ -65,12 +66,17 @@
       <div id="feed" aria-live="polite"></div>
       <button class="secondary-btn load-more hidden" id="loadMore" type="button">Load older posts</button>
     </section>
-    <aside class="right-column" aria-label="Your account and suggestions">
-      <div class="account-row"><span class="avatar" id="sideAvatar">Y</span><div class="user-meta"><div class="username" id="sideUsername">Your account</div><div class="post-time">Welcome to InstaCloud</div></div><button class="text-btn" id="logoutBtn" type="button">Log out</button></div>
+    <aside id="rightColumn" class="right-column" aria-label="Your account and suggestions">
+      <div class="account-row"><button class="avatar avatar-button" id="sideAvatar" type="button" aria-label="Open your profile">Y</button><div class="user-meta"><button class="username text-btn" id="sideUsername" type="button">Your account</button><div class="post-time">Welcome to InstaCloud</div></div><button class="text-btn" id="logoutBtn" type="button">Log out</button></div>
       <div class="side-section-head"><span>People to follow</span><button class="text-btn" id="refreshSuggestions" type="button">Refresh</button></div>
       <div id="suggestions"></div>
       <div class="side-footer"><a href="#about">About</a> · <a href="#help">Help</a> · <a href="#privacy">Privacy</a> · <a href="#terms">Terms</a><p>© 2026 INSTACLOUD</p></div>
     </aside>
+    <section id="profilePage" class="profile-page hidden" aria-label="Your profile">
+      <button class="profile-back" id="profileBack" type="button">← Back to feed</button>
+      <div class="profile-header"><div class="profile-avatar" id="profileAvatar">D</div><div class="profile-details"><h1 id="profileUsername">@username</h1><div class="profile-stats"><span><strong id="profilePostCount">0</strong> posts</span><span><strong id="profileFollowerCount">0</strong> followers</span><span><strong id="profileFollowingCount">0</strong> following</span></div><div class="profile-bio" id="profileBio"></div></div></div>
+      <div class="profile-section-title" id="profileSectionTitle">Posts</div><div class="profile-grid" id="profileGrid"></div><div class="profile-empty hidden" id="profileEmpty">No posts yet. Share your first photo to see it here.</div><div class="profile-focus hidden" id="profileFocus"></div>
+    </section>
   </main>
 
   <nav class="mobile-nav hidden" id="mobileNav" aria-label="Main navigation">
@@ -148,6 +154,7 @@
     ['topAvatar', 'sideAvatar', 'mobileAvatar'].forEach(id => { if ($(id)) $(id).textContent = letter; });
   }
   function showApp() {
+    document.body.classList.remove('auth-mode');
     $('authView').classList.add('hidden'); $('appView').classList.remove('hidden'); $('mobileNav').classList.remove('hidden');
     $('sideUsername').textContent = currentUsername ? `@${currentUsername}` : 'Your account'; setAvatar(currentUsername);
     bootstrap();
@@ -161,6 +168,7 @@
     } catch (error) { if (/token|expired|unauthorized/i.test(error.message)) logout(); else notify(error.message, true); }
   }
   function showAuth() {
+    document.body.classList.add('auth-mode');
     $('authView').classList.remove('hidden'); $('appView').classList.add('hidden'); $('mobileNav').classList.add('hidden');
   }
   function logout() {
@@ -331,6 +339,31 @@
       data.posts.forEach(post => { const tile = document.createElement('button'); tile.className = 'explore-tile'; tile.type = 'button'; const image = document.createElement('img'); image.src = post.image_url; image.alt = post.caption || `Post by ${post.username}`; image.loading = 'lazy'; const label = document.createElement('span'); label.textContent = `♥ ${post.likes_count}`; tile.append(image, label); tile.addEventListener('click', () => { $('feed').replaceChildren(makePost(post)); $('feed').scrollIntoView({ behavior: 'smooth', block: 'start' }); }); grid.append(tile); }); $('feed').append(grid);
     } catch (error) { notify(error.message, true); }
   }
+  function closeProfile() {
+    $('profilePage').classList.add('hidden'); $('mainColumn').classList.remove('hidden'); $('rightColumn').classList.remove('hidden');
+  }
+  async function openProfile(username = currentUsername) {
+    if (!username) return;
+    $('mainColumn').classList.add('hidden'); $('rightColumn').classList.add('hidden'); $('profilePage').classList.remove('hidden');
+    $('profileUsername').textContent = `@${username}`; $('profileBio').textContent = ''; $('profileGrid').replaceChildren(); $('profileFocus').replaceChildren(); $('profileFocus').classList.add('hidden'); $('profileEmpty').classList.add('hidden');
+    $('profileAvatar').replaceChildren(document.createTextNode(username.charAt(0).toUpperCase()));
+    try {
+      const profile = await api(`/users/${encodeURIComponent(username)}`);
+      $('profileUsername').textContent = `@${profile.username}`; $('profilePostCount').textContent = Number(profile.posts || 0).toLocaleString(); $('profileFollowerCount').textContent = Number(profile.followers || 0).toLocaleString(); $('profileFollowingCount').textContent = Number(profile.following || 0).toLocaleString(); $('profileBio').textContent = profile.bio || '';
+      if (profile.profile_pic_url) { const image = document.createElement('img'); image.src = profile.profile_pic_url; image.alt = `${profile.username}'s profile`; $('profileAvatar').replaceChildren(image); }
+      const posts = await api(`/users/${encodeURIComponent(username)}/posts`);
+      if (!posts.length) { $('profileEmpty').classList.remove('hidden'); return; }
+      posts.forEach(post => {
+        const tile = document.createElement('button'); tile.className = 'profile-tile'; tile.type = 'button'; tile.setAttribute('aria-label', `Open post: ${post.caption || 'Photo'}`);
+        const image = document.createElement('img'); image.src = post.image_url; image.alt = post.caption || `Photo by ${post.username}`; image.loading = 'lazy'; tile.append(image);
+        tile.addEventListener('click', () => {
+          const back = document.createElement('button'); back.className = 'profile-back'; back.type = 'button'; back.textContent = '← All posts'; back.addEventListener('click', () => { $('profileFocus').classList.add('hidden'); $('profileGrid').classList.remove('hidden'); $('profileSectionTitle').classList.remove('hidden'); });
+          $('profileFocus').replaceChildren(back, makePost(post)); $('profileGrid').classList.add('hidden'); $('profileSectionTitle').classList.add('hidden'); $('profileFocus').classList.remove('hidden');
+        });
+        $('profileGrid').append(tile);
+      });
+    } catch (error) { notify(error.message, true); closeProfile(); }
+  }
   async function search(value) {
     const query = value.trim(); if (!query) return;
     if (query.startsWith('#')) {
@@ -366,10 +399,10 @@
   }
   $('modalShare').addEventListener('click', publishPost); $('sharePostBtn').addEventListener('click', publishPost);
   $('refreshBtn').addEventListener('click', () => loadFeed(false)); $('loadMore').addEventListener('click', () => loadFeed(true)); $('logoutBtn').addEventListener('click', logout);
-  $('homeBtn').addEventListener('click', () => { $('search').value = ''; $('feedTitle').textContent = 'Global feed'; loadFeed(false); }); $('mobileHome').addEventListener('click', () => { $('feedTitle').textContent = 'Global feed'; window.scrollTo({ top: 0, behavior: 'smooth' }); loadFeed(false); });
+  $('homeBtn').addEventListener('click', () => { closeProfile(); $('search').value = ''; $('feedTitle').textContent = 'Global feed'; loadFeed(false); }); $('mobileHome').addEventListener('click', () => { closeProfile(); $('feedTitle').textContent = 'Global feed'; window.scrollTo({ top: 0, behavior: 'smooth' }); loadFeed(false); });
   $('exploreBtn').addEventListener('click', loadExplore);
-  $('profileBtn').addEventListener('click', () => notify(currentUsername ? `Signed in as @${currentUsername}` : 'Your profile'));
-  $('mobileProfile').addEventListener('click', () => notify(currentUsername ? `Signed in as @${currentUsername}` : 'Your profile'));
+  $('profileBtn').addEventListener('click', () => openProfile()); $('mobileProfile').addEventListener('click', () => openProfile());
+  $('sideAvatar').addEventListener('click', () => openProfile()); $('sideUsername').addEventListener('click', () => openProfile()); $('profileBack').addEventListener('click', closeProfile);
   function showNotifications() { notify(notificationMessages.length ? notificationMessages.join(' · ') : 'You are all caught up.'); }
   $('notificationBtn').addEventListener('click', showNotifications); $('mobileNotifications').addEventListener('click', showNotifications);
   $('refreshSuggestions').addEventListener('click', loadSuggestions);

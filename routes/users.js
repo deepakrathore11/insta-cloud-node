@@ -26,6 +26,23 @@ router.get("/search", auth, async (req, res) => {
   res.json(rows);
 });
 
+router.get("/:username/posts", auth, async (req, res) => {
+  const { rows } = await pool.query(
+    `SELECT p.*, u.username, u.profile_pic_url,
+       EXISTS(SELECT 1 FROM likes l WHERE l.post_id=p.post_id AND l.user_id=$1) AS liked_by_me,
+       EXISTS(SELECT 1 FROM follows f WHERE f.follower_id=$1 AND f.following_id=p.user_id) AS following,
+       (SELECT count(*) FROM comments c WHERE c.post_id=p.post_id)::int AS comments_count
+     FROM posts p JOIN users u USING(user_id)
+     WHERE u.username=$2 ORDER BY p.created_at DESC, p.post_id DESC LIMIT 120`,
+    [req.user.user_id, req.params.username]);
+  res.json(rows.map(post => ({
+    post_id: post.post_id, user_id: post.user_id, username: post.username,
+    profile_pic_url: post.profile_pic_url, image_url: post.image_url, caption: post.caption,
+    hashtags: post.hashtags || [], likes_count: post.likes_count, created_at: post.created_at,
+    liked_by_me: Boolean(post.liked_by_me), following: Boolean(post.following), comments_count: Number(post.comments_count || 0),
+  })));
+});
+
 router.get("/:username", async (req, res) => {
   const { rows } = await pool.query(
     `SELECT u.user_id AS id, u.username, u.bio, u.profile_pic_url,
